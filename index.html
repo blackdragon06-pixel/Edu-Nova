@@ -2980,6 +2980,2256 @@ function escapeHTML(text){
 }
 
 </script>
+<script>
+(() => {
 
+"use strict";
+
+/* =========================================================
+   EDUNOVA SMART UPGRADE v3
+   Safe add-on for the existing EduNova index.html
+========================================================= */
+
+const U = () => window.user;
+
+function saveData(){
+
+    const u = U();
+
+    if(!u) return;
+
+    localStorage.setItem(
+        "edunovaUser",
+        JSON.stringify(u)
+    );
+}
+
+
+/* =========================================================
+   EXTRA CSS
+========================================================= */
+
+const style = document.createElement("style");
+
+style.textContent = `
+
+.smartUpgradeGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:15px;
+}
+
+.smartUpgradeCard{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:20px;
+    box-shadow:var(--shadow);
+}
+
+.smartUpgradeCard:hover{
+    transform:translateY(-3px);
+    transition:.2s;
+}
+
+.smartIcon{
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+.smartBig{
+    font-size:28px;
+    font-weight:800;
+    color:var(--primary);
+}
+
+.smartFilters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:15px 0;
+}
+
+.smartFilters select{
+    padding:11px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+}
+
+.smartChapterGrid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.smartChapter{
+    padding:16px;
+    border-radius:17px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    cursor:pointer;
+    transition:.2s;
+}
+
+.smartChapter:hover{
+    transform:translateY(-4px);
+    border-color:var(--primary);
+}
+
+.smartProgress{
+    height:9px;
+    background:var(--bg);
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.smartProgress div{
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        var(--primary),
+        var(--pink)
+    );
+}
+
+.smartChallenge{
+    padding:20px;
+    border-radius:20px;
+    color:white;
+    background:
+      linear-gradient(
+        135deg,
+        #635bff,
+        #f65399
+      );
+}
+
+.smartBadge{
+    display:inline-block;
+    padding:7px 12px;
+    border-radius:30px;
+    background:rgba(99,91,255,.1);
+    color:var(--primary);
+    font-size:12px;
+    font-weight:700;
+    margin:4px;
+}
+
+.smartFlash{
+    min-height:180px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:25px;
+    border-radius:22px;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(99,91,255,.12),
+        rgba(246,83,153,.12)
+      );
+    border:1px solid var(--border);
+    cursor:pointer;
+}
+
+.smartPlan{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    padding:12px;
+    border-radius:13px;
+    background:var(--bg);
+    margin:7px 0;
+}
+
+.smartPlan input{
+    accent-color:var(--primary);
+}
+
+.smartLevel{
+    font-size:18px;
+    font-weight:800;
+}
+
+@media(max-width:900px){
+
+    .smartUpgradeGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .smartChapterGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    .smartUpgradeGrid,
+    .smartChapterGrid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+`;
+
+document.head.appendChild(style);
+
+
+/* =========================================================
+   SMART DATA
+========================================================= */
+
+const smartChapters = {
+
+    Mathematics:[
+        "Algebra",
+        "Functions",
+        "Limits",
+        "Differentiation",
+        "Integration",
+        "Trigonometry",
+        "Vectors",
+        "Statistics"
+    ],
+
+    Biology:[
+        "Cell Biology",
+        "Biological Molecules",
+        "Genetics",
+        "Human Biology",
+        "Plant Biology",
+        "Ecology",
+        "Evolution",
+        "Microbiology"
+    ],
+
+    Physics:[
+        "Measurement",
+        "Mechanics",
+        "Work Energy Power",
+        "Waves",
+        "Thermal Physics",
+        "Electricity",
+        "Magnetism",
+        "Modern Physics"
+    ],
+
+    Chemistry:[
+        "Atomic Structure",
+        "Chemical Bonding",
+        "Energetics",
+        "Chemical Equilibrium",
+        "Organic Chemistry",
+        "Inorganic Chemistry",
+        "Electrochemistry",
+        "Chemical Kinetics"
+    ]
+
+};
+
+
+/* =========================================================
+   EXTRA MCQ DATABASE
+========================================================= */
+
+const extraMCQ = {
+
+Mathematics:[
+
+{
+chapter:"Algebra",
+q:"3x−5=10 නම් x හි අගය?",
+o:["3","5","7","10"],
+a:1,
+e:"3x=15 නිසා x=5."
+},
+
+{
+chapter:"Functions",
+q:"f(x)=x+4 නම් f(6)?",
+o:["8","9","10","12"],
+a:2,
+e:"f(6)=6+4=10."
+},
+
+{
+chapter:"Limits",
+q:"lim x→3 (2x+1) හි අගය?",
+o:["5","6","7","8"],
+a:2,
+e:"x=3 substitute කළ විට 2(3)+1=7."
+},
+
+{
+chapter:"Differentiation",
+q:"d/dx(4x³) යනු?",
+o:["4x²","8x²","12x²","12x"],
+a:2,
+e:"Power rule අනුව 4×3x²=12x²."
+},
+
+{
+chapter:"Integration",
+q:"∫3x² dx යනු?",
+o:["x³+C","3x³+C","6x+C","x²+C"],
+a:0,
+e:"∫3x²dx=x³+C."
+},
+
+{
+chapter:"Trigonometry",
+q:"cos 0° හි අගය?",
+o:["0","1","−1","1/2"],
+a:1,
+e:"cos 0°=1."
+},
+
+{
+chapter:"Vectors",
+q:"Vector එකක direction එක වැදගත්ද?",
+o:["ඔව්","නැහැ","කිසිවිටක නැහැ","අදාළ නැහැ"],
+a:0,
+e:"Vector එකකට magnitude සහ direction දෙකම ඇත."
+},
+
+{
+chapter:"Statistics",
+q:"1,3,5 හි mean එක?",
+o:["2","3","4","5"],
+a:1,
+e:"(1+3+5)/3=3."
+}
+
+],
+
+
+Biology:[
+
+{
+chapter:"Cell Biology",
+q:"Mitochondria වල ප්‍රධාන කාර්යය?",
+o:[
+"Protein storage",
+"ATP production",
+"DNA destruction",
+"Water storage"
+],
+a:1,
+e:"Mitochondria cellular respiration මගින් ATP නිපදවීමට සම්බන්ධ වේ."
+},
+
+{
+chapter:"Biological Molecules",
+q:"Glucose අයත් වන්නේ?",
+o:["Carbohydrate","Protein","Lipid","Nucleic acid"],
+a:0,
+e:"Glucose එක carbohydrate එකකි."
+},
+
+{
+chapter:"Genetics",
+q:"Gene එකක් යනු?",
+o:[
+"DNA හි ක්‍රියාකාරී තොරතුරු ඒකකයක්",
+"Cell එකක්",
+"Organ එකක්",
+"Protein එකක්"
+],
+a:0,
+e:"Gene එකක් යනු hereditary information එකක් coding කරන DNA කොටසකි."
+},
+
+{
+chapter:"Human Biology",
+q:"රුධිරයේ oxygen ප්‍රධාන වශයෙන් රැගෙන යන්නේ?",
+o:["Platelets","Haemoglobin","Plasma water","Hormones"],
+a:1,
+e:"Haemoglobin oxygen transport සඳහා ප්‍රධාන වේ."
+},
+
+{
+chapter:"Plant Biology",
+q:"Photosynthesis සඳහා ප්‍රධාන pigment එක?",
+o:["Haemoglobin","Chlorophyll","Melanin","Keratin"],
+a:1,
+e:"Chlorophyll light energy absorb කිරීමට උපකාරී වේ."
+},
+
+{
+chapter:"Ecology",
+q:"Producer කෙනෙක් යනු?",
+o:[
+"තම ආහාරය නිපදවන ජීවියෙක්",
+"මියගිය දේ පමණක් කන ජීවියෙක්",
+"විලෝපිකයෙක්",
+"රෝගකාරකයෙක්"
+],
+a:0,
+e:"Plants වැනි organisms producers ලෙස හැඳින්වේ."
+},
+
+{
+chapter:"Evolution",
+q:"Natural selection මගින්?",
+o:[
+"හිතකර ලක්ෂණ population එකක වැඩි විය හැක",
+"සියලු organisms එකවර වෙනස් වේ",
+"DNA නැති වේ",
+"Cells අතුරුදහන් වේ"
+],
+a:0,
+e:"සුදුසු ලක්ෂණ ඇති organisms survive/reproduce වීමෙන් ඒවා population එකේ වැඩි විය හැක."
+},
+
+{
+chapter:"Microbiology",
+q:"Virus එකකට සාමාන්‍යයෙන් අවශ්‍ය වන්නේ?",
+o:[
+"Host cell එකක්",
+"Sunlight පමණක්",
+"Soil පමණක්",
+"Oxygen පමණක්"
+],
+a:0,
+e:"Viruses replication සඳහා host cells භාවිතා කරයි."
+}
+
+],
+
+
+Physics:[
+
+{
+chapter:"Measurement",
+q:"Mass හි SI unit එක?",
+o:["kg","m","s","N"],
+a:0,
+e:"Mass සඳහා SI base unit kilogram (kg)."
+},
+
+{
+chapter:"Mechanics",
+q:"Acceleration යනු?",
+o:[
+"Velocity change rate",
+"Distance only",
+"Mass only",
+"Force only"
+],
+a:0,
+e:"Acceleration = change of velocity / time."
+},
+
+{
+chapter:"Work Energy Power",
+q:"Kinetic energy එකේ formula එක?",
+o:[
+"mv",
+"1/2 mv²",
+"ma",
+"mgh"
+],
+a:1,
+e:"Kinetic energy = 1/2 mv²."
+},
+
+{
+chapter:"Waves",
+q:"Wave speed formula එක?",
+o:[
+"v=fλ",
+"v=m/f",
+"v=IR",
+"v=ma"
+],
+a:0,
+e:"Wave speed v = frequency × wavelength."
+},
+
+{
+chapter:"Thermal Physics",
+q:"Temperature වැඩි වීමෙන් particles සාමාන්‍යයෙන්?",
+o:[
+"වඩා වේගයෙන් චලනය වේ",
+"සම්පූර්ණයෙන් නවතී",
+"නැති වේ",
+"mass නැති වේ"
+],
+a:0,
+e:"Temperature වැඩි වීම particle kinetic energy වැඩි වීමට සම්බන්ධ වේ."
+},
+
+{
+chapter:"Electricity",
+q:"Electric current හි SI unit එක?",
+o:["Volt","Ampere","Ohm","Watt"],
+a:1,
+e:"Current හි SI unit Ampere (A)."
+},
+
+{
+chapter:"Magnetism",
+q:"Compass needle එක ප්‍රධාන වශයෙන් සම්බන්ධ වන්නේ?",
+o:[
+"Magnetic field",
+"Sound",
+"Heat",
+"Pressure"
+],
+a:0,
+e:"Compass needle එක magnetic field එකට align වේ."
+},
+
+{
+chapter:"Modern Physics",
+q:"Photon එකක් යනු?",
+o:[
+"Electromagnetic radiation හි quantum එකක්",
+"Electron එකක්",
+"Proton එකක්",
+"Atom එකක්"
+],
+a:0,
+e:"Photon යනු electromagnetic radiation හි energy quantum එකකි."
+}
+
+],
+
+
+Chemistry:[
+
+{
+chapter:"Atomic Structure",
+q:"Atomic number එක නිරූපණය කරන්නේ?",
+o:[
+"Protons ගණන",
+"Neutrons ගණන",
+"Electrons + neutrons",
+"Mass පමණක්"
+],
+a:0,
+e:"Atomic number = number of protons."
+},
+
+{
+chapter:"Chemical Bonding",
+q:"Covalent bond එකකදී සාමාන්‍යයෙන්?",
+o:[
+"Electron pairs share කරයි",
+"Neutrons share කරයි",
+"Protons disappear",
+"Nuclei split වේ"
+],
+a:0,
+e:"Covalent bonding involves sharing electron pairs."
+},
+
+{
+chapter:"Energetics",
+q:"Endothermic reaction එකක්?",
+o:[
+"Heat absorb කරයි",
+"Heat release පමණක් කරයි",
+"Energy නැත",
+"Temperature සෑමවිටම zero"
+],
+a:0,
+e:"Endothermic processes absorb energy from surroundings."
+},
+
+{
+chapter:"Chemical Equilibrium",
+q:"Equilibrium එකකදී forward සහ reverse rates?",
+o:[
+"සමාන වේ",
+"සෑමවිටම zero",
+"Forward පමණක්",
+"Reverse පමණක්"
+],
+a:0,
+e:"Dynamic equilibrium වල forward හා reverse reaction rates සමාන වේ."
+},
+
+{
+chapter:"Organic Chemistry",
+q:"Methane හි formula එක?",
+o:["CH₄","C₂H₆","CO₂","CH₃OH"],
+a:0,
+e:"Methane = CH₄."
+},
+
+{
+chapter:"Inorganic Chemistry",
+q:"HCl යනු?",
+o:[
+"Hydrochloric acid",
+"Sodium chloride",
+"Water",
+"Ammonia"
+],
+a:0,
+e:"HCl aqueous solution hydrochloric acid ලෙස හැඳින්වේ."
+},
+
+{
+chapter:"Electrochemistry",
+q:"Reduction මතක තබා ගැනීමට පහසු ක්‍රමය?",
+o:[
+"Gain of electrons",
+"Loss of electrons",
+"Loss of neutrons",
+"Gain of protons"
+],
+a:0,
+e:"Reduction = gain of electrons."
+},
+
+{
+chapter:"Chemical Kinetics",
+q:"Catalyst එකක් සාමාන්‍යයෙන්?",
+o:[
+"Activation energy අඩු කරයි",
+"Reactants නැති කරයි",
+"Products සම්පූර්ණයෙන් නැති කරයි",
+"Mass destroy කරයි"
+],
+a:0,
+e:"Catalyst එකක් alternative pathway එකක් ලබාදී activation energy අඩු කරයි."
+}
+
+]
+
+};
+
+
+/* =========================================================
+   ADD EXTRA QUESTIONS TO EXISTING DB
+========================================================= */
+
+try{
+
+    if(window.DB){
+
+        Object.keys(extraMCQ).forEach(subject => {
+
+            if(!DB[subject]){
+                DB[subject]=[];
+            }
+
+            extraMCQ[subject].forEach(q => {
+
+                const duplicate =
+                    DB[subject].some(
+                        old => old.q === q.q
+                    );
+
+                if(!duplicate){
+                    DB[subject].push(q);
+                }
+
+            });
+
+        });
+
+    }
+
+}catch(e){
+
+    console.log(
+        "Smart MCQ database upgrade:",
+        e
+    );
+
+}
+
+
+/* =========================================================
+   SMART PERFORMANCE
+========================================================= */
+
+function performanceLevel(score){
+
+    if(score >= 90)
+        return {
+            title:"🏆 Elite Learner",
+            text:"Concept mastery ඉතා හොඳයි!"
+        };
+
+    if(score >= 75)
+        return {
+            title:"🌟 Advanced Learner",
+            text:"ගොඩක් හොඳ progress එකක්!"
+        };
+
+    if(score >= 60)
+        return {
+            title:"🔥 Strong Learner",
+            text:"තව practice කළොත් excellent!"
+        };
+
+    if(score >= 40)
+        return {
+            title:"📚 Growing Learner",
+            text:"Weak areas revise කරමු."
+        };
+
+    return {
+        title:"🌱 Starter",
+        text:"Basics වලින් නැවත practice කරන්න."
+    };
+
+}
+
+
+/* =========================================================
+   SMART DASHBOARD
+========================================================= */
+
+function addSmartDashboard(){
+
+    const dashboard =
+        document.getElementById("dashboard");
+
+    if(!dashboard) return;
+
+    if(
+        document.getElementById(
+            "smartDashboardUpgrade"
+        )
+    ) return;
+
+
+    const box =
+        document.createElement("div");
+
+    box.id =
+        "smartDashboardUpgrade";
+
+
+    box.innerHTML = `
+
+    <div class="sectionTitle">
+        <h2>🚀 Smart Learning Center</h2>
+    </div>
+
+    <div class="smartUpgradeGrid">
+
+        <div class="smartUpgradeCard">
+            <div class="smartIcon">🎯</div>
+            <div class="smartBig"
+                 id="smartAccuracy">
+                 0%
+            </div>
+            <p class="muted">
+                Average Accuracy
+            </p>
+        </div>
+
+        <div class="smartUpgradeCard">
+            <div class="smartIcon">📚</div>
+            <div class="smartBig"
+                 id="smartQuestions">
+                 0
+            </div>
+            <p class="muted">
+                Questions Practiced
+            </p>
+        </div>
+
+        <div class="smartUpgradeCard">
+            <div class="smartIcon">🔥</div>
+            <div class="smartBig"
+                 id="smartStreak">
+                 0
+            </div>
+            <p class="muted">
+                Current Streak
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="smartUpgradeCard"
+         style="margin-top:15px">
+
+        <h3>
+            🤖 Today's Smart Recommendation
+        </h3>
+
+        <p
+          id="smartRecommendationText"
+          class="muted"
+          style="margin-top:10px;line-height:1.8">
+        </p>
+
+    </div>
+
+
+    <div
+      class="smartChallenge"
+      style="margin-top:15px">
+
+        <h2>
+            ⚡ Daily Challenge
+        </h2>
+
+        <p
+          style="margin-top:7px">
+          අද subject එකක් තෝරලා
+          MCQ 5ක් complete කරන්න.
+        </p>
+
+        <button
+          class="btn"
+          style="
+            margin-top:14px;
+            background:white;
+            color:#635bff"
+          onclick="window.eduDailyChallenge()">
+          🚀 Start Challenge
+        </button>
+
+    </div>
+
+    `;
+
+
+    dashboard.appendChild(box);
+
+    updateSmartDashboard();
+
+}
+
+
+/* =========================================================
+   UPDATE SMART DASHBOARD
+========================================================= */
+
+function updateSmartDashboard(){
+
+    const u = U();
+
+    if(!u) return;
+
+
+    const recent =
+        u.recent || [];
+
+
+    let total =
+        recent.length;
+
+    let percentages = [];
+
+
+    recent.forEach(item => {
+
+        if(item.percentage){
+
+            percentages.push(
+                parseInt(
+                    item.percentage
+                )
+            );
+
+        }
+
+    });
+
+
+    const accuracy =
+        percentages.length
+        ? Math.round(
+            percentages.reduce(
+                (a,b)=>a+b,
+                0
+            ) /
+            percentages.length
+          )
+        : 0;
+
+
+    const a =
+        document.getElementById(
+            "smartAccuracy"
+        );
+
+    const q =
+        document.getElementById(
+            "smartQuestions"
+        );
+
+    const s =
+        document.getElementById(
+            "smartStreak"
+        );
+
+
+    if(a)
+        a.textContent =
+            accuracy + "%";
+
+    if(q)
+        q.textContent =
+            total;
+
+    if(s)
+        s.textContent =
+            u.streak || 0;
+
+
+    const recommendation =
+        document.getElementById(
+            "smartRecommendationText"
+        );
+
+
+    if(recommendation){
+
+        if(accuracy >= 80){
+
+            recommendation.innerHTML =
+            "🔥 ඔයාගේ performance එක හොඳයි. දැන් <b>Hard MCQ</b> practice කරලා speed එක වැඩි කරගන්න.";
+
+        }else if(accuracy >= 60){
+
+            recommendation.innerHTML =
+            "📖 Concepts හොඳයි. දැන් වැරදුණු MCQ නැවත බලලා timed practice කරන්න.";
+
+        }else{
+
+            recommendation.innerHTML =
+            "🌱 අද එක් subject එකක් තෝරලා basics revise කරලා MCQ 5ක් කරන්න.";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   DAILY CHALLENGE
+========================================================= */
+
+window.eduDailyChallenge =
+function(){
+
+    const subjects = [
+        "Mathematics",
+        "Biology",
+        "Physics",
+        "Chemistry"
+    ];
+
+    const subject =
+        subjects[
+            new Date().getDate()
+            % subjects.length
+        ];
+
+
+    if(
+        typeof window.subjectMCQ ===
+        "function"
+    ){
+
+        window.subjectMCQ(
+            subject
+        );
+
+        if(
+            typeof window.toast ===
+            "function"
+        ){
+
+            window.toast(
+                "⚡ Daily Challenge: "
+                + subject
+            );
+
+        }
+
+    }
+
+};
+
+
+/* =========================================================
+   SMART CHAPTER PAGE
+========================================================= */
+
+function addChapterCenter(){
+
+    const subjectsPage =
+        document.getElementById(
+            "subjects"
+        );
+
+    if(!subjectsPage) return;
+
+    if(
+        document.getElementById(
+            "smartChapterCenter"
+        )
+    ) return;
+
+
+    const section =
+        document.createElement("div");
+
+    section.id =
+        "smartChapterCenter";
+
+    section.innerHTML = `
+
+    <div class="sectionTitle">
+
+        <h2>
+            🧠 Chapter Practice Center
+        </h2>
+
+    </div>
+
+    <div
+      class="smartFilters">
+
+        <select
+          id="smartSubjectSelect">
+
+            <option>
+              Mathematics
+            </option>
+
+            <option>
+              Biology
+            </option>
+
+            <option>
+              Physics
+            </option>
+
+            <option>
+              Chemistry
+            </option>
+
+        </select>
+
+    </div>
+
+    <div
+      id="smartChapterGrid"
+      class="smartChapterGrid">
+    </div>
+
+    `;
+
+
+    subjectsPage.appendChild(
+        section
+    );
+
+
+    const select =
+        document.getElementById(
+            "smartSubjectSelect"
+        );
+
+
+    select.addEventListener(
+        "change",
+        renderSmartChapters
+    );
+
+
+    renderSmartChapters();
+
+}
+
+
+function renderSmartChapters(){
+
+    const subject =
+        document.getElementById(
+            "smartSubjectSelect"
+        ).value;
+
+
+    const grid =
+        document.getElementById(
+            "smartChapterGrid"
+        );
+
+
+    if(!grid) return;
+
+
+    const chapters =
+        smartChapters[
+            subject
+        ] || [];
+
+
+    const u = U() || {};
+
+    const progress =
+        u.subjectProgress || {};
+
+
+    grid.innerHTML =
+        chapters.map(
+            (chapter,index) => `
+
+            <div
+              class="smartChapter"
+              onclick="
+                window.eduChapterQuiz(
+                  '${subject}',
+                  '${chapter}'
+                )
+              ">
+
+                <div
+                  style="
+                    font-size:27px">
+                    ${
+                        [
+                          "📘",
+                          "🧠",
+                          "🎯",
+                          "🔬",
+                          "⚡",
+                          "📊",
+                          "🧪",
+                          "🚀"
+                        ][index%8]
+                    }
+                </div>
+
+                <b>
+                    ${chapter}
+                </b>
+
+                <div
+                  class="smartProgress">
+
+                    <div
+                      style="
+                        width:${
+                          progress[
+                            subject+"_"+chapter
+                          ] || 0
+                        }%">
+                    </div>
+
+                </div>
+
+                <small
+                  class="muted">
+                    ${
+                      progress[
+                        subject+"_"+chapter
+                      ] || 0
+                    }% complete
+                </small>
+
+            </div>
+
+        `
+        ).join("");
+
+}
+
+
+window.eduChapterQuiz =
+function(subject,chapter){
+
+    if(
+        typeof window.go ===
+        "function"
+    ){
+
+        window.go("mcq");
+
+    }
+
+
+    setTimeout(() => {
+
+        const select =
+            document.getElementById(
+                "quizSubject"
+            );
+
+
+        if(select){
+
+            select.value =
+                subject;
+
+        }
+
+
+        /*
+          Existing quiz is subject-based.
+          We filter DB questions here.
+        */
+
+        if(
+            window.DB &&
+            DB[subject]
+        ){
+
+            window.__eduChapterQuestions =
+                DB[subject]
+                .filter(
+                    q =>
+                    q.chapter === chapter
+                );
+
+
+            if(
+                window.__eduChapterQuestions
+                .length
+            ){
+
+                window.__eduChapterIndex = 0;
+                window.__eduChapterScore = 0;
+
+                window.eduLoadChapterQuestion(
+                    subject,
+                    chapter
+                );
+
+            }else{
+
+                if(
+                    typeof window.toast ===
+                    "function"
+                ){
+
+                    window.toast(
+                        "මේ chapter එකට MCQ තව add කරමින් පවතී."
+                    );
+
+                }
+
+            }
+
+        }
+
+    },200);
+
+};
+
+
+/* =========================================================
+   CHAPTER QUIZ
+========================================================= */
+
+window.eduLoadChapterQuestion =
+function(subject,chapter){
+
+    const list =
+        window.__eduChapterQuestions;
+
+    const index =
+        window.__eduChapterIndex || 0;
+
+    if(!list || !list.length)
+        return;
+
+
+    const q =
+        list[index];
+
+
+    const questionNo =
+        document.getElementById(
+            "questionNo"
+        );
+
+    const question =
+        document.getElementById(
+            "question"
+        );
+
+    const options =
+        document.getElementById(
+            "options"
+        );
+
+    const next =
+        document.getElementById(
+            "nextButton"
+        );
+
+
+    if(questionNo){
+
+        questionNo.textContent =
+        `🧠 ${subject} • ${chapter}
+         • ${index+1}/${list.length}`;
+
+    }
+
+
+    if(question){
+
+        question.textContent =
+        q.q;
+
+    }
+
+
+    if(options){
+
+        options.innerHTML =
+        q.o.map(
+            (option,i) => `
+
+            <button
+              class="option"
+              onclick="
+                window.eduAnswerChapter(
+                    ${i},
+                    this
+                )
+              ">
+
+                ${
+                  String.fromCharCode(
+                    65+i
+                  )
+                }.
+
+                ${escapeHTML(option)}
+
+            </button>
+
+        `
+        ).join("");
+
+    }
+
+
+    if(next){
+
+        next.textContent =
+        index === list.length-1
+        ? "Finish 🏆"
+        : "Next →";
+
+
+        next.onclick =
+        window.eduNextChapter;
+
+    }
+
+};
+
+
+window.eduAnswerChapter =
+function(index,element){
+
+    if(
+        window.__eduChapterAnswered
+    ) return;
+
+
+    window.__eduChapterAnswered =
+    true;
+
+
+    const list =
+        window.__eduChapterQuestions;
+
+    const current =
+        window.__eduChapterIndex || 0;
+
+    const q =
+        list[current];
+
+
+    if(index === q.a){
+
+        element.classList.add(
+            "correct"
+        );
+
+        window.__eduChapterScore++;
+
+    }else{
+
+        element.classList.add(
+            "wrong"
+        );
+
+
+        const buttons =
+            document.querySelectorAll(
+                ".option"
+            );
+
+
+        if(buttons[q.a]){
+
+            buttons[q.a]
+                .classList.add(
+                    "correct"
+                );
+
+        }
+
+    }
+
+
+    const options =
+        document.getElementById(
+            "options"
+        );
+
+
+    options.insertAdjacentHTML(
+        "beforeend",
+
+        `
+        <div class="explanation">
+
+            💡 <b>Explanation:</b><br>
+
+            ${escapeHTML(q.e)}
+
+        </div>
+        `
+
+    );
+
+};
+
+
+window.eduNextChapter =
+function(){
+
+    if(
+        !window.__eduChapterAnswered
+    ){
+
+        if(
+            typeof window.toast ===
+            "function"
+        ){
+
+            window.toast(
+                "Answer එකක් select කරන්න."
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    window.__eduChapterAnswered =
+    false;
+
+
+    const list =
+        window.__eduChapterQuestions;
+
+
+    const current =
+        window.__eduChapterIndex || 0;
+
+
+    if(
+        current <
+        list.length-1
+    ){
+
+        window.__eduChapterIndex =
+            current+1;
+
+
+        window.eduLoadChapterQuestion();
+
+        return;
+
+    }
+
+
+    const score =
+        window.__eduChapterScore;
+
+
+    const percentage =
+        Math.round(
+            score/list.length*100
+        );
+
+
+    const u = U();
+
+
+    if(u){
+
+        u.xp =
+            (u.xp || 0)
+            +
+            Math.max(
+                10,
+                score*10
+            );
+
+
+        u.tests =
+            (u.tests || 0)+1;
+
+
+        u.recent =
+            u.recent || [];
+
+
+        u.recent.unshift({
+
+            title:
+                "Chapter Quiz",
+
+            score:
+                score+"/"+list.length,
+
+            percentage:
+                percentage+"%",
+
+            date:
+                new Date()
+                .toLocaleDateString()
+
+        });
+
+
+        u.recent =
+            u.recent.slice(0,10);
+
+
+        saveData();
+
+
+        if(
+            typeof window.updateUI ===
+            "function"
+        ){
+
+            window.updateUI();
+
+        }
+
+
+        if(
+            typeof window.renderRecent ===
+            "function"
+        ){
+
+            window.renderRecent();
+
+        }
+
+    }
+
+
+    const level =
+        performanceLevel(
+            percentage
+        );
+
+
+    document.getElementById(
+        "questionNo"
+    ).textContent =
+        "🎉 Chapter Complete";
+
+
+    document.getElementById(
+        "question"
+    ).innerHTML = `
+
+        <div
+          style="
+            text-align:center;
+            padding:20px">
+
+            <div
+              style="
+                font-size:60px">
+                ${
+                  percentage>=80
+                  ? "🏆"
+                  : percentage>=50
+                  ? "⭐"
+                  : "💪"
+                }
+            </div>
+
+            <h2>
+                ${score}/${list.length}
+            </h2>
+
+            <p
+              style="
+                margin-top:8px">
+
+                Accuracy:
+                <b>${percentage}%</b>
+
+            </p>
+
+            <h3
+              style="
+                margin-top:10px">
+
+                ${level.title}
+
+            </h3>
+
+            <p
+              class="muted"
+              style="
+                margin-top:6px">
+
+                ${level.text}
+
+            </p>
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "options"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "nextButton"
+    ).textContent =
+        "🔄 Try Again";
+
+
+    document.getElementById(
+        "nextButton"
+    ).onclick =
+        () => {
+
+            window.__eduChapterIndex=0;
+            window.__eduChapterScore=0;
+
+            window.eduLoadChapterQuestion();
+
+        };
+
+};
+
+
+/* =========================================================
+   FLASHCARD CENTER
+========================================================= */
+
+function addFlashcards(){
+
+    const dashboard =
+        document.getElementById(
+            "dashboard"
+        );
+
+    if(!dashboard) return;
+
+    if(
+        document.getElementById(
+            "smartFlashcards"
+        )
+    ) return;
+
+
+    const section =
+        document.createElement("div");
+
+    section.id =
+        "smartFlashcards";
+
+
+    section.innerHTML = `
+
+    <div class="sectionTitle">
+        <h2>🃏 Smart Flashcards</h2>
+    </div>
+
+    <div
+      class="smartFlash"
+      id="smartFlashCard"
+      onclick="window.eduFlipCard()">
+
+        <div>
+
+            <div
+              style="
+                font-size:35px">
+                🧠
+            </div>
+
+            <h3
+              id="flashQuestion"
+              style="
+                margin-top:10px">
+              Click to start
+            </h3>
+
+            <p
+              id="flashAnswer"
+              class="muted"
+              style="
+                margin-top:10px">
+            </p>
+
+        </div>
+
+    </div>
+
+    <div
+      style="
+        display:flex;
+        justify-content:center;
+        gap:8px;
+        margin-top:12px">
+
+        <button
+          class="btn primary"
+          onclick="
+            window.eduNextFlash()
+          ">
+          Next Card →
+        </button>
+
+    </div>
+
+    `;
+
+
+    dashboard.appendChild(
+        section
+    );
+
+
+    window.__flashIndex=0;
+    window.__flashShowingAnswer=false;
+
+    window.eduNextFlash();
+
+}
+
+
+window.eduFlipCard =
+function(){
+
+    const answer =
+        document.getElementById(
+            "flashAnswer"
+        );
+
+    if(!answer) return;
+
+
+    window.__flashShowingAnswer =
+        !window.__flashShowingAnswer;
+
+
+    if(
+        window.__flashShowingAnswer
+    ){
+
+        const data =
+            window.__flashData;
+
+        answer.innerHTML =
+            "✅ <b>Answer:</b> "
+            +
+            escapeHTML(
+                data.o[data.a]
+            );
+
+    }else{
+
+        answer.textContent =
+            "Tap card to reveal answer";
+
+    }
+
+};
+
+
+window.eduNextFlash =
+function(){
+
+    let all = [];
+
+    try{
+
+        Object.keys(
+            extraMCQ
+        ).forEach(subject => {
+
+            extraMCQ[
+                subject
+            ].forEach(q => {
+
+                all.push({
+                    ...q,
+                    subject
+                });
+
+            });
+
+        });
+
+    }catch(e){}
+
+
+    if(!all.length) return;
+
+
+    const index =
+        Math.floor(
+            Math.random()
+            *all.length
+        );
+
+
+    const data =
+        all[index];
+
+
+    window.__flashData =
+        data;
+
+    window.__flashShowingAnswer =
+        false;
+
+
+    const q =
+        document.getElementById(
+            "flashQuestion"
+        );
+
+    const a =
+        document.getElementById(
+            "flashAnswer"
+        );
+
+
+    if(q){
+
+        q.textContent =
+            data.q;
+
+    }
+
+
+    if(a){
+
+        a.textContent =
+            "Tap card to reveal answer";
+
+    }
+
+};
+
+
+/* =========================================================
+   STUDY PLANNER
+========================================================= */
+
+function addStudyPlanner(){
+
+    const dashboard =
+        document.getElementById(
+            "dashboard"
+        );
+
+    if(!dashboard) return;
+
+
+    if(
+        document.getElementById(
+            "smartPlanner"
+        )
+    ) return;
+
+
+    const section =
+        document.createElement("div");
+
+    section.id =
+        "smartPlanner";
+
+
+    section.innerHTML = `
+
+    <div class="sectionTitle">
+        <h2>🗓️ Today's Study Planner</h2>
+    </div>
+
+    <div
+      class="smartUpgradeCard">
+
+        <div class="smartPlan">
+
+            <input
+              type="checkbox"
+              onchange="
+                window.eduPlanXP(this)
+              ">
+
+            <span>
+              📐 Mathematics MCQ – 20 questions
+            </span>
+
+        </div>
+
+        <div class="smartPlan">
+
+            <input
+              type="checkbox"
+              onchange="
+                window.eduPlanXP(this)
+              ">
+
+            <span>
+              🧬 Biology – Chapter Revision
+            </span>
+
+        </div>
+
+        <div class="smartPlan">
+
+            <input
+              type="checkbox"
+              onchange="
+                window.eduPlanXP(this)
+              ">
+
+            <span>
+              ⚡ Physics – 25 min Focus
+            </span>
+
+        </div>
+
+        <div class="smartPlan">
+
+            <input
+              type="checkbox"
+              onchange="
+                window.eduPlanXP(this)
+              ">
+
+            <span>
+              ⚗️ Chemistry – Quick Review
+            </span>
+
+        </div>
+
+    </div>
+
+    `;
+
+
+    dashboard.appendChild(
+        section
+    );
+
+}
+
+
+window.eduPlanXP =
+function(check){
+
+    if(
+        check.dataset.done ===
+        "yes"
+    ) return;
+
+
+    if(check.checked){
+
+        check.dataset.done =
+            "yes";
+
+
+        const u = U();
+
+        if(u){
+
+            u.xp =
+                (u.xp || 0)+5;
+
+            saveData();
+
+        }
+
+
+        if(
+            typeof window.updateUI ===
+            "function"
+        ){
+
+            window.updateUI();
+
+        }
+
+
+        if(
+            typeof window.toast ===
+            "function"
+        ){
+
+            window.toast(
+                "+5 XP ⭐ Task complete!"
+            );
+
+        }
+
+    }
+
+};
+
+
+/* =========================================================
+   PROFILE ACHIEVEMENT SYSTEM
+========================================================= */
+
+function addSmartAchievements(){
+
+    const page =
+        document.getElementById(
+            "achievements"
+        );
+
+    if(!page) return;
+
+
+    if(
+        document.getElementById(
+            "smartAchievements"
+        )
+    ) return;
+
+
+    const u = U() || {};
+
+
+    const xp =
+        u.xp || 0;
+
+    const tests =
+        u.tests || 0;
+
+    const streak =
+        u.streak || 0;
+
+
+    const badges = [
+
+        {
+            icon:"🌱",
+            name:"First Step",
+            unlocked:
+                tests >= 1
+        },
+
+        {
+            icon:"🔥",
+            name:"7 Day Streak",
+            unlocked:
+                streak >= 7
+        },
+
+        {
+            icon:"🧠",
+            name:"Quiz Master",
+            unlocked:
+                tests >= 10
+        },
+
+        {
+            icon:"⭐",
+            name:"500 XP",
+            unlocked:
+                xp >= 500
+        },
+
+        {
+            icon:"🏆",
+            name:"1000 XP",
+            unlocked:
+                xp >= 1000
+        },
+
+        {
+            icon:"🚀",
+            name:"A/L Warrior",
+            unlocked:
+                tests >= 25
+        }
+
+    ];
+
+
+    const box =
+        document.createElement("div");
+
+    box.id =
+        "smartAchievements";
+
+
+    box.innerHTML = `
+
+        <div class="sectionTitle">
+
+            <h2>
+                🏅 Smart Achievements
+            </h2>
+
+        </div>
+
+        <div
+          class="smartUpgradeGrid">
+
+            ${
+              badges.map(
+                badge => `
+
+                <div
+                  class="smartUpgradeCard"
+                  style="
+                    opacity:
+                    ${
+                      badge.unlocked
+                      ? 1
+                      : .45
+                    }">
+
+                    <div
+                      class="smartIcon">
+
+                        ${badge.icon}
+
+                    </div>
+
+                    <b>
+                        ${badge.name}
+                    </b>
+
+                    <p
+                      class="muted"
+                      style="
+                        margin-top:6px">
+
+                      ${
+                        badge.unlocked
+                        ? "Unlocked ✅"
+                        : "Locked 🔒"
+                      }
+
+                    </p>
+
+                </div>
+
+              `
+              ).join("")
+            }
+
+        </div>
+
+    `;
+
+
+    page.appendChild(
+        box
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+function initializeUpgrade(){
+
+    try{
+
+        addSmartDashboard();
+
+        addChapterCenter();
+
+        addFlashcards();
+
+        addStudyPlanner();
+
+        addSmartAchievements();
+
+        updateSmartDashboard();
+
+    }catch(error){
+
+        console.log(
+            "EduNova Smart Upgrade:",
+            error
+        );
+
+    }
+
+}
+
+
+/*
+   Wait until the existing EduNova
+   page has loaded.
+*/
+
+setTimeout(
+    initializeUpgrade,
+    700
+);
+
+
+/*
+   Refresh dashboard statistics
+   when returning to dashboard.
+*/
+
+document.addEventListener(
+    "click",
+    () => {
+
+        setTimeout(
+            updateSmartDashboard,
+            200
+        );
+
+    }
+);
+
+
+})();
+</script>
 </body>
 </html>
