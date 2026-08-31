@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EduNova 📚 | Smart A/L Learning</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;500;600;700;800&display=swap');
+
+*{
+ box-sizing:border-box;
+ margin:0;
+ padding:0;
+ font-family:'Noto Sans Sinhala',sans-serif;
+}
+
+:root{
+ --bg:#f5f7ff;
+ --card:#ffffff;
+ --text:#172033;
+ --muted:#687086;
+ --primary:#635bff;
+ --secondary:#00b894;
+ --pink:#ff5fa2;
+ --border:#e7e9f2;
+ --shadow:0 15px 40px rgba(40,45,90,.10);
+}
+
+body.dark{
+ --bg:#0d1020;
+ --card:#171b2e;
+ --text:#f4f6ff;
+ --muted:#aeb4ca;
+ --border:#292e47;
+ --shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+body{
+ background:var(--bg);
+ color:var(--text);
+ transition:.3s;
+ min-height:100vh;
+}
+
+button,input{
+ font:inherit;
+}
+
+button{
+ cursor:pointer;
+ border:0;
+}
+
+.hidden{display:none!important}
+
+/* LOGIN */
+#loginPage{
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+ background:
+ radial-gradient(circle at 10% 20%,rgba(99,91,255,.25),transparent 30%),
+ radial-gradient(circle at 90% 80%,rgba(0,184,148,.18),transparent 30%),
+ var(--bg);
+}
+
+.loginBox{
+ width:min(440px,100%);
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:30px;
+ padding:35px;
+ box-shadow:var(--shadow);
+ text-align:center;
+ animation:pop .6s ease;
+}
+
+@keyframes pop{
+ from{opacity:0;transform:translateY(25px) scale(.96)}
+ to{opacity:1;transform:none}
+}
+
+.logo{
+ width:75px;
+ height:75px;
+ margin:auto;
+ display:grid;
+ place-items:center;
+ border-radius:23px;
+ background:linear-gradient(135deg,var(--primary),var(--pink));
+ color:white;
+ font-size:38px;
+ box-shadow:0 15px 30px rgba(99,91,255,.3);
+}
+
+.logoText{
+ margin-top:15px;
+ font-size:30px;
+ font-weight:800;
+}
+
+.logoText span{
+ color:var(--primary);
+}
+
+.loginSub{
+ color:var(--muted);
+ margin:8px 0 25px;
+}
+
+.input{
+ width:100%;
+ padding:15px 17px;
+ border:1px solid var(--border);
+ border-radius:15px;
+ outline:none;
+ background:var(--bg);
+ color:var(--text);
+ margin-bottom:13px;
+}
+
+.input:focus{
+ border-color:var(--primary);
+ box-shadow:0 0 0 3px rgba(99,91,255,.12);
+}
+
+.primaryBtn{
+ width:100%;
+ padding:15px;
+ border-radius:15px;
+ background:linear-gradient(135deg,var(--primary),#847dff);
+ color:white;
+ font-weight:700;
+ transition:.2s;
+}
+
+.primaryBtn:hover{
+ transform:translateY(-2px);
+ box-shadow:0 10px 25px rgba(99,91,255,.3);
+}
+
+.otpBox{
+ margin-top:20px;
+ padding:18px;
+ border-radius:18px;
+ background:var(--bg);
+}
+
+.demoOtp{
+ font-size:28px;
+ font-weight:800;
+ letter-spacing:8px;
+ color:var(--primary);
+ margin:8px;
+}
+
+.small{
+ font-size:12px;
+ color:var(--muted);
+}
+
+/* APP */
+#app{
+ display:none;
+ min-height:100vh;
+}
+
+.sidebar{
+ position:fixed;
+ left:0;
+ top:0;
+ bottom:0;
+ width:250px;
+ background:var(--card);
+ border-right:1px solid var(--border);
+ padding:25px 15px;
+ z-index:50;
+}
+
+.sideLogo{
+ font-size:22px;
+ font-weight:800;
+ padding:10px 15px 25px;
+}
+
+.sideLogo span{color:var(--primary)}
+
+.navBtn{
+ width:100%;
+ padding:13px 15px;
+ background:none;
+ color:var(--muted);
+ border-radius:13px;
+ text-align:left;
+ margin:4px 0;
+ transition:.2s;
+}
+
+.navBtn:hover,
+.navBtn.active{
+ background:rgba(99,91,255,.11);
+ color:var(--primary);
+}
+
+.main{
+ margin-left:250px;
+ padding:25px;
+ max-width:1500px;
+}
+
+.topbar{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:15px;
+ margin-bottom:25px;
+}
+
+.search{
+ flex:1;
+ max-width:500px;
+ padding:13px 18px;
+ border:1px solid var(--border);
+ border-radius:14px;
+ background:var(--card);
+ color:var(--text);
+ outline:none;
+}
+
+.topActions{
+ display:flex;
+ gap:10px;
+ align-items:center;
+}
+
+.iconBtn{
+ width:45px;
+ height:45px;
+ border-radius:13px;
+ background:var(--card);
+ color:var(--text);
+ border:1px solid var(--border);
+}
+
+.profileBtn{
+ width:45px;
+ height:45px;
+ border-radius:50%;
+ background:linear-gradient(135deg,var(--primary),var(--pink));
+ color:white;
+ font-weight:800;
+}
+
+.hero{
+ padding:30px;
+ border-radius:25px;
+ color:white;
+ background:linear-gradient(120deg,#635bff,#8d67ff,#ff5fa2);
+ position:relative;
+ overflow:hidden;
+ margin-bottom:25px;
+}
+
+.hero:after{
+ content:"";
+ position:absolute;
+ width:200px;
+ height:200px;
+ border-radius:50%;
+ background:rgba(255,255,255,.12);
+ right:-60px;
+ top:-70px;
+}
+
+.hero h1{
+ font-size:30px;
+ margin-bottom:7px;
+}
+
+.hero p{opacity:.9}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:16px;
+ margin-bottom:25px;
+}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:20px;
+ padding:20px;
+ box-shadow:var(--shadow);
+}
+
+.stat{
+ display:flex;
+ align-items:center;
+ gap:15px;
+}
+
+.statIcon{
+ width:48px;
+ height:48px;
+ border-radius:15px;
+ display:grid;
+ place-items:center;
+ background:rgba(99,91,255,.12);
+ font-size:23px;
+}
+
+.stat h3{font-size:23px}
+.stat p{font-size:12px;color:var(--muted)}
+
+.sectionTitle{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:25px 0 15px;
+}
+
+.subjectGrid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:16px;
+}
+
+.subject{
+ padding:22px;
+ min-height:170px;
+ cursor:pointer;
+ transition:.25s;
+ position:relative;
+ overflow:hidden;
+}
+
+.subject:hover{
+ transform:translateY(-5px);
+}
+
+.subjectIcon{
+ font-size:38px;
+ margin-bottom:12px;
+}
+
+.subject h3{margin-bottom:5px}
+.subject p{font-size:13px;color:var(--muted)}
+
+.progress{
+ height:8px;
+ background:var(--bg);
+ border-radius:20px;
+ overflow:hidden;
+ margin-top:15px;
+}
+
+.progress div{
+ height:100%;
+ border-radius:20px;
+ background:linear-gradient(90deg,var(--primary),var(--pink));
+}
+
+.featureGrid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:16px;
+}
+
+.feature{
+ cursor:pointer;
+ transition:.2s;
+}
+
+.feature:hover{
+ transform:translateY(-4px);
+}
+
+.featureIcon{
+ font-size:30px;
+ margin-bottom:10px;
+}
+
+/* PAGE */
+.page{display:none}
+.page.active{display:block;animation:fade .35s ease}
+
+@keyframes fade{
+ from{opacity:0;transform:translateY(10px)}
+ to{opacity:1;transform:none}
+}
+
+/* MCQ */
+.quizBox{
+ max-width:800px;
+ margin:auto;
+}
+
+.question{
+ font-size:20px;
+ font-weight:700;
+ margin:20px 0;
+}
+
+.option{
+ width:100%;
+ text-align:left;
+ padding:15px;
+ margin:8px 0;
+ border:1px solid var(--border);
+ border-radius:14px;
+ background:var(--card);
+ color:var(--text);
+}
+
+.option:hover{border-color:var(--primary)}
+.option.correct{border-color:#00b894;background:rgba(0,184,148,.12)}
+.option.wrong{border-color:#ff5b6e;background:rgba(255,91,110,.12)}
+
+.result{
+ text-align:center;
+ padding:35px;
+}
+
+/* PAPER */
+.paperGrid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:16px;
+}
+
+.paper{
+ position:relative;
+}
+
+.tag{
+ display:inline-block;
+ padding:5px 10px;
+ border-radius:20px;
+ background:rgba(99,91,255,.12);
+ color:var(--primary);
+ font-size:11px;
+ margin-bottom:10px;
+}
+
+.download{
+ margin-top:15px;
+ padding:10px 14px;
+ border-radius:11px;
+ background:var(--primary);
+ color:white;
+}
+
+/* COUNTDOWN */
+.countGrid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:16px;
+}
+
+.count{
+ text-align:center;
+}
+
+.countYear{
+ font-size:23px;
+ font-weight:800;
+ color:var(--primary);
+}
+
+.timer{
+ font-size:25px;
+ font-weight:800;
+ margin-top:8px;
+}
+
+/* AI */
+.chat{
+ max-width:800px;
+ margin:auto;
+}
+
+.chatMessages{
+ height:420px;
+ overflow:auto;
+ padding:10px;
+}
+
+.msg{
+ max-width:80%;
+ padding:13px 16px;
+ border-radius:17px;
+ margin:10px 0;
+}
+
+.bot{
+ background:var(--bg);
+}
+
+.user{
+ background:var(--primary);
+ color:white;
+ margin-left:auto;
+}
+
+.chatInput{
+ display:flex;
+ gap:8px;
+ margin-top:10px;
+}
+
+.chatInput input{margin:0}
+
+.chatInput button{
+ padding:0 20px;
+ border-radius:14px;
+ background:var(--primary);
+ color:white;
+}
+
+/* PROFILE */
+.profileCard{
+ max-width:650px;
+ margin:auto;
+ text-align:center;
+}
+
+.avatar{
+ width:90px;
+ height:90px;
+ border-radius:50%;
+ display:grid;
+ place-items:center;
+ background:linear-gradient(135deg,var(--primary),var(--pink));
+ color:white;
+ font-size:35px;
+ font-weight:800;
+ margin:10px auto 15px;
+}
+
+/* MOBILE */
+.mobileMenu{
+ display:none;
+}
+
+@media(max-width:1000px){
+ .grid,.subjectGrid{grid-template-columns:repeat(2,1fr)}
+ .featureGrid,.paperGrid,.countGrid{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:750px){
+ .sidebar{
+  transform:translateX(-100%);
+  transition:.3s;
+ }
+ .sidebar.open{transform:none}
+ .main{margin-left:0;padding:15px}
+ .mobileMenu{display:block}
+ .grid,.subjectGrid,.featureGrid,.paperGrid,.countGrid{
+  grid-template-columns:1fr;
+ }
+ .topbar{flex-wrap:wrap}
+ .search{order:3;max-width:none;flex-basis:100%}
+ .hero h1{font-size:24px}
+ .loginBox{padding:25px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<section id="loginPage">
+ <div class="loginBox">
+  <div class="logo">📚</div>
+  <div class="logoText">Edu<span>Nova</span></div>
+  <div class="loginSub">ඔයාගේ Smart A/L Study Space ✨</div>
+
+  <div id="loginStep">
+   <input id="username" class="input" placeholder="ඔයාගේ නම">
+   <input id="contact" class="input" placeholder="Email හෝ Phone Number">
+   <button class="primaryBtn" onclick="sendOTP()">OTP එක ලබාගන්න 🔐</button>
+   <p class="small" style="margin-top:15px">
+    Demo version — OTP verification interface
+   </p>
+  </div>
+
+  <div id="otpStep" class="otpBox hidden">
+   <b>OTP එක ඇතුළත් කරන්න</b>
+   <div class="demoOtp" id="showOtp">000000</div>
+   <input id="otp" class="input" maxlength="6" placeholder="OTP අංක 6">
+   <button class="primaryBtn" onclick="verifyOTP()">Login 🚀</button>
+   <p class="small" style="margin-top:10px">Demo OTP එක ඉහළින් පෙන්වයි.</p>
+  </div>
+ </div>
+</section>
+
+
+<!-- APP -->
+<div id="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="sideLogo">📚 Edu<span>Nova</span></div>
+
+ <button class="navBtn active" onclick="showPage('home',this)">🏠 Dashboard</button>
+ <button class="navBtn" onclick="showPage('subjects',this)">📚 Subjects</button>
+ <button class="navBtn" onclick="showPage('mcq',this)">🧠 MCQ Arena</button>
+ <button class="navBtn" onclick="showPage('papers',this)">📄 Papers</button>
+ <button class="navBtn" onclick="showPage('notes',this)">📝 Notes</button>
+ <button class="navBtn" onclick="showPage('mindmaps',this)">🗺️ Mind Maps</button>
+ <button class="navBtn" onclick="showPage('ai',this)">🤖 Sinhala AI</button>
+ <button class="navBtn" onclick="showPage('exam',this)">⏳ A/L Countdown</button>
+ <button class="navBtn" onclick="showPage('profile',this)">👤 Profile</button>
+</aside>
+
+
+<main class="main">
+
+ <div class="topbar">
+  <button class="iconBtn mobileMenu" onclick="toggleMenu()">☰</button>
+
+  <input id="search" class="search" placeholder="🔎 පාඩම්, papers, subjects සොයන්න..." oninput="searchContent()">
+
+  <div class="topActions">
+   <button class="iconBtn" onclick="toggleDark()">🌙</button>
+   <button class="profileBtn" onclick="showPage('profile')">E</button>
+  </div>
+ </div>
+
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+ <div class="hero">
+  <h1>ආයුබෝවන්, <span id="welcomeName">Student</span>! 👋</h1>
+  <p>අදත් ඔයාගේ target එකට තවත් පියවරක්. 🚀</p>
+ </div>
+
+ <div class="grid">
+
+  <div class="card stat">
+   <div class="statIcon">🔥</div>
+   <div>
+    <h3 id="streak">1</h3>
+    <p>දින Study Streak</p>
+   </div>
+  </div>
+
+  <div class="card stat">
+   <div class="statIcon">⭐</div>
+   <div>
+    <h3 id="xp">120</h3>
+    <p>XP Points</p>
+   </div>
+  </div>
+
+  <div class="card stat">
+   <div class="statIcon">🎯</div>
+   <div>
+    <h3 id="level">Beginner</h3>
+    <p>Current Level</p>
+   </div>
+  </div>
+
+  <div class="card stat">
+   <div class="statIcon">🏆</div>
+   <div>
+    <h3 id="tests">0</h3>
+    <p>Completed Tests</p>
+   </div>
+  </div>
+
+ </div>
+
+
+ <div class="sectionTitle">
+  <h2>📚 Subjects</h2>
+  <button onclick="showPage('subjects')" style="color:var(--primary);background:none">සියල්ල →</button>
+ </div>
+
+ <div class="subjectGrid">
+
+  <div class="card subject" onclick="startSubject('Mathematics')">
+   <div class="subjectIcon">📐</div>
+   <h3>Mathematics</h3>
+   <p>Pure + Applied Mathematics</p>
+   <div class="progress"><div style="width:58%"></div></div>
+  </div>
+
+  <div class="card subject" onclick="startSubject('Biology')">
+   <div class="subjectIcon">🧬</div>
+   <h3>Biology</h3>
+   <p>Living world & systems</p>
+   <div class="progress"><div style="width:42%"></div></div>
+  </div>
+
+  <div class="card subject" onclick="startSubject('Physics')">
+   <div class="subjectIcon">⚡</div>
+   <h3>Physics</h3>
+   <p>Concepts + calculations</p>
+   <div class="progress"><div style="width:35%"></div></div>
+  </div>
+
+  <div class="card subject" onclick="startSubject('Chemistry')">
+   <div class="subjectIcon">⚗️</div>
+   <h3>Chemistry</h3>
+   <p>Organic + inorganic + physical</p>
+   <div class="progress"><div style="width:27%"></div></div>
+  </div>
+
+ </div>
+
+
+ <div class="sectionTitle">
+  <h2>✨ Smart Study Tools</h2>
+ </div>
+
+ <div class="featureGrid">
+
+  <div class="card feature" onclick="showPage('mcq')">
+   <div class="featureIcon">🧠</div>
+   <h3>MCQ Arena</h3>
+   <p>Chapter-wise MCQ practice කරලා score එක වැඩි කරගන්න.</p>
+  </div>
+
+  <div class="card feature" onclick="showPage('ai')">
+   <div class="featureIcon">🤖</div>
+   <h3>Sinhala AI Tutor</h3>
+   <p>පාඩමක් තේරුම්ගන්න Sinhala AI එක්ක practice කරන්න.</p>
+  </div>
+
+  <div class="card feature" onclick="showPage('mindmaps')">
+   <div class="featureIcon">🗺️</div>
+   <h3>Mind Maps</h3>
+   <p>අමාරු concepts visual විදිහට මතක තියාගන්න.</p>
+  </div>
+
+ </div>
+
+
+ <div class="sectionTitle">
+  <h2>💡 අදගේ Motivation</h2>
+ </div>
+
+ <div class="card">
+  <h3 id="motivation"></h3>
+  <p style="color:var(--muted);margin-top:8px">— EduNova Daily Motivation ❤️</p>
+ </div>
+
+</section>
+
+
+<!-- SUBJECTS -->
+<section id="subjects" class="page">
+ <div class="hero">
+  <h1>📚 Your Subjects</h1>
+  <p>ඔයාගේ A/L journey එක මෙතනින් manage කරන්න.</p>
+ </div>
+
+ <div class="subjectGrid">
+
+  <div class="card subject">
+   <div class="subjectIcon">📐</div>
+   <h3>Mathematics</h3>
+   <p>Algebra • Calculus • Mechanics • Statistics</p>
+   <button class="download" onclick="startSubject('Mathematics')">Study Now</button>
+  </div>
+
+  <div class="card subject">
+   <div class="subjectIcon">🧬</div>
+   <h3>Biology</h3>
+   <p>Cell • Genetics • Human Biology • Ecology</p>
+   <button class="download" onclick="startSubject('Biology')">Study Now</button>
+  </div>
+
+  <div class="card subject">
+   <div class="subjectIcon">⚡</div>
+   <h3>Physics</h3>
+   <p>Mechanics • Waves • Electricity • Modern Physics</p>
+   <button class="download" onclick="startSubject('Physics')">Study Now</button>
+  </div>
+
+  <div class="card subject">
+   <div class="subjectIcon">⚗️</div>
+   <h3>Chemistry</h3>
+   <p>Organic • Inorganic • Physical Chemistry</p>
+   <button class="download" onclick="startSubject('Chemistry')">Study Now</button>
+  </div>
+
+ </div>
+</section>
+
+
+<!-- MCQ -->
+<section id="mcq" class="page">
+ <div class="hero">
+  <h1>🧠 MCQ Arena</h1>
+  <p>දැනුම test කරලා XP එකතු කරගන්න!</p>
+ </div>
+
+ <div class="card quizBox" id="quiz">
+  <div class="tag">Mixed A/L</div>
+  <div id="questionNumber">Question 1 / 5</div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <button class="primaryBtn" onclick="nextQuestion()" id="nextBtn">Next →</button>
+ </div>
+</section>
+
+
+<!-- PAPERS -->
+<section id="papers" class="page">
+ <div class="hero">
+  <h1>📄 Paper Library</h1>
+  <p>Past Papers • Model Papers • School Papers</p>
+ </div>
+
+ <div class="paperGrid">
+
+  <div class="card paper">
+   <span class="tag">Mathematics</span>
+   <h3>A/L Past Paper Collection</h3>
+   <p style="color:var(--muted)">Past paper practice සඳහා collection එක.</p>
+   <button class="download" onclick="paperMessage()">⬇️ PDF</button>
+  </div>
+
+  <div class="card paper">
+   <span class="tag">Biology</span>
+   <h3>Biology Model Papers</h3>
+   <p style="color:var(--muted)">Model questions practice කරන්න.</p>
+   <button class="download" onclick="paperMessage()">⬇️ PDF</button>
+  </div>
+
+  <div class="card paper">
+   <span class="tag">Physics</span>
+   <h3>Physics School Papers</h3>
+   <p style="color:var(--muted)">School-level paper practice.</p>
+   <button class="download" onclick="paperMessage()">⬇️ PDF</button>
+  </div>
+
+  <div class="card paper">
+   <span class="tag">Chemistry</span>
+   <h3>Chemistry Model Papers</h3>
+   <p style="color:var(--muted)">Exam pattern practice.</p>
+   <button class="download" onclick="paperMessage()">⬇️ PDF</button>
+  </div>
+
+  <div class="card paper">
+   <span class="tag">Mixed</span>
+   <h3>Full A/L Mock Exam</h3>
+   <p style="color:var(--muted)">Time-based full practice.</p>
+   <button class="download" onclick="paperMessage()">⬇️ PDF</button>
+  </div>
+
+  <div class="card paper">
+   <span class="tag">Revision</span>
+   <h3>Quick Revision Papers</h3>
+   <p style="color:var(--muted)">Fast revision sessions.</p>
+   <button class="download" onclick="paperMessage()">⬇️ PDF</button>
+  </div>
+
+ </div>
+</section>
+
+
+<!-- NOTES -->
+<section id="notes" class="page">
+ <div class="hero">
+  <h1>📝 Shot Notes</h1>
+  <p>පාඩම් වලට අදාළ short notes මෙතනට add කරන්න පුළුවන්.</p>
+ </div>
+
+ <div class="grid">
+
+  <div class="card">
+   <span class="tag">Mathematics</span>
+   <h3>Quick Revision</h3>
+   <p style="color:var(--muted)">Formula සහ key concepts සඳහා short-note space.</p>
+  </div>
+
+  <div class="card">
+   <span class="tag">Biology</span>
+   <h3>Important Facts</h3>
+   <p style="color:var(--muted)">Important biological facts save කරගන්න.</p>
+  </div>
+
+  <div class="card">
+   <span class="tag">Physics</span>
+   <h3>Formula Bank</h3>
+   <p style="color:var(--muted)">Important equations එක තැනක.</p>
+  </div>
+
+  <div class="card">
+   <span class="tag">Chemistry</span>
+   <h3>Reaction Notes</h3>
+   <p style="color:var(--muted)">Important reactions & concepts.</p>
+  </div>
+
+ </div>
+</section>
+
+
+<!-- MINDMAP -->
+<section id="mindmaps" class="page">
+ <div class="hero">
+  <h1>🗺️ Sinhala Mind Maps</h1>
+  <p>Concept එකක් එක බැල්මෙන් revise කරන්න.</p>
+ </div>
+
+ <div class="grid">
+
+  <div class="card">
+   <h3>📐 Mathematics</h3>
+   <p style="margin-top:12px">Functions → Limits → Differentiation → Integration</p>
+   <div class="progress"><div style="width:75%"></div></div>
+  </div>
+
+  <div class="card">
+   <h3>🧬 Biology</h3>
+   <p style="margin-top:12px">Cell → Tissue → Organ → Organ System</p>
+   <div class="progress"><div style="width:80%"></div></div>
+  </div>
+
+  <div class="card">
+   <h3>⚡ Physics</h3>
+   <p style="margin-top:12px">Force → Motion → Energy → Momentum</p>
+   <div class="progress"><div style="width:70%"></div></div>
+  </div>
+
+  <div class="card">
+   <h3>⚗️ Chemistry</h3>
+   <p style="margin-top:12px">Atom → Bond → Molecule → Reaction</p>
+   <div class="progress"><div style="width:65%"></div></div>
+  </div>
+
+ </div>
+</section>
+
+
+<!-- AI -->
+<section id="ai" class="page">
+ <div class="hero">
+  <h1>🤖 Sinhala AI Tutor</h1>
+  <p>ඔයාගේ study buddy — EduNova AI ❤️</p>
+ </div>
+
+ <div class="card chat">
+  <div class="chatMessages" id="chatMessages">
+   <div class="msg bot">
+    👋 ආයුබෝවන්! මම EduNova AI Tutor.<br>
+    ඔයාට අද මොන පාඩමද තේරුම්ගන්න ඕන?
+   </div>
+  </div>
+
+  <div class="chatInput">
+   <input id="chatInput" class="input" placeholder="ප්‍රශ්නයක් Sinhala වලින් අහන්න..." onkeydown="if(event.key==='Enter')sendChat()">
+   <button onclick="sendChat()">➤</button>
+  </div>
+ </div>
+</section>
+
+
+<!-- EXAM -->
+<section id="exam" class="page">
+ <div class="hero">
+  <h1>⏳ A/L Countdown</h1>
+  <p>Target එක මතක තියාගෙන අද වැඩ කරන්න! 🎯</p>
+ </div>
+
+ <div class="countGrid">
+  <div class="card count">
+   <div class="countYear">2027 A/L</div>
+   <div class="timer" id="count2027">Calculating...</div>
+  </div>
+
+  <div class="card count">
+   <div class="countYear">2028 A/L</div>
+   <div class="timer" id="count2028">Calculating...</div>
+  </div>
+
+  <div class="card count">
+   <div class="countYear">2029 A/L</div>
+   <div class="timer" id="count2029">Calculating...</div>
+  </div>
+ </div>
+
+ <div class="card" style="margin-top:20px;text-align:center">
+  <h2>🎯 Your Target</h2>
+  <p style="color:var(--muted);margin-top:8px">
+   අද කරන පොඩි effort එක තමයි හෙට result එක වෙනස් කරන්නේ.
+  </p>
+ </div>
+</section>
+
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+ <div class="hero">
+  <h1>👤 My Profile</h1>
+  <p>ඔයාගේ EduNova journey එක.</p>
+ </div>
+
+ <div class="card profileCard">
+  <div class="avatar" id="avatar">E</div>
+  <h2 id="profileName">Student</h2>
+  <p id="profileContact" style="color:var(--muted)">student</p>
+
+  <div class="grid" style="margin-top:25px">
+   <div class="card">
+    <h3 id="pXP">120</h3>
+    <p style="color:var(--muted)">XP</p>
+   </div>
+   <div class="card">
+    <h3 id="pTests">0</h3>
+    <p style="color:var(--muted)">Tests</p>
+   </div>
+  </div>
+
+  <button class="primaryBtn" onclick="logout()">Logout</button>
+ </div>
+</section>
+
+</main>
+</div>
+
+
+<script>
+
+/* ---------------- AUTH ---------------- */
+
+let otpCode="";
+let userData=JSON.parse(localStorage.getItem("edunovaUser")||"null");
+
+function sendOTP(){
+
+ const name=document.getElementById("username").value.trim();
+ const contact=document.getElementById("contact").value.trim();
+
+ if(!name || !contact){
+  alert("කරුණාකර නම සහ Email/Phone Number එක දෙන්න.");
+  return;
+ }
+
+ otpCode=Math.floor(100000+Math.random()*900000).toString();
+
+ document.getElementById("showOtp").textContent=otpCode;
+ document.getElementById("loginStep").classList.add("hidden");
+ document.getElementById("otpStep").classList.remove("hidden");
+
+ userData={
+  name:name,
+  contact:contact,
+  xp:120,
+  tests:0,
+  streak:1
+ };
+}
+
+function verifyOTP(){
+
+ const entered=document.getElementById("otp").value.trim();
+
+ if(entered!==otpCode){
+  alert("OTP එක වැරදියි. Demo OTP එක බලන්න.");
+  return;
+ }
+
+ localStorage.setItem("edunovaUser",JSON.stringify(userData));
+ openApp();
+}
+
+function openApp(){
+
+ if(!userData)return;
+
+ document.getElementById("loginPage").style.display="none";
+ document.getElementById("app").style.display="block";
+
+ document.getElementById("welcomeName").textContent=userData.name;
+ document.getElementById("profileName").textContent=userData.name;
+ document.getElementById("profileContact").textContent=userData.contact;
+
+ document.getElementById("avatar").textContent=userData.name.charAt(0).toUpperCase();
+
+ updateStats();
+}
+
+function logout(){
+ localStorage.removeItem("edunovaUser");
+ location.reload();
+}
+
+if(userData)openApp();
+
+
+/* ---------------- NAVIGATION ---------------- */
+
+function showPage(id,btn){
+
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+
+ const page=document.getElementById(id);
+ if(page)page.classList.add("active");
+
+ document.querySelectorAll(".navBtn").forEach(b=>b.classList.remove("active"));
+
+ if(btn)btn.classList.add("active");
+
+ document.getElementById("sidebar").classList.remove("open");
+
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function toggleMenu(){
+ document.getElementById("sidebar").classList.toggle("open");
+}
+
+
+/* ---------------- DARK MODE ---------------- */
+
+function toggleDark(){
+
+ document.body.classList.toggle("dark");
+
+ localStorage.setItem(
+  "edunovaDark",
+  document.body.classList.contains("dark")
+ );
+}
+
+if(localStorage.getItem("edunovaDark")==="true"){
+ document.body.classList.add("dark");
+}
+
+
+/* ---------------- STATS ---------------- */
+
+function updateStats(){
+
+ if(!userData)return;
+
+ document.getElementById("xp").textContent=userData.xp;
+ document.getElementById("tests").textContent=userData.tests;
+ document.getElementById("streak").textContent=userData.streak;
+
+ document.getElementById("pXP").textContent=userData.xp;
+ document.getElementById("pTests").textContent=userData.tests;
+
+ let level="Beginner";
+
+ if(userData.xp>=500)level="Advanced";
+ else if(userData.xp>=250)level="Intermediate";
+
+ document.getElementById("level").textContent=level;
+}
+
+
+/* ---------------- SUBJECT ---------------- */
+
+function startSubject(subject){
+
+ alert(
+ "📚 "+subject+
+ "\n\nමේ subject එකේ chapter-wise lessons, MCQs, notes සහ papers මෙතනින් access කරන්න පුළුවන්.\n\nEduNova 🚀"
+ );
+
+ showPage("mcq");
+}
+
+
+/* ---------------- MCQ ---------------- */
+
+const questions=[
+
+ {
+  q:"ශ්‍රිතයක derivative එකෙන් සාමාන්‍යයෙන් සොයන්නේ කුමක්ද?",
+  o:["වර්ගඵලය","ක්ෂණික වෙනස්වීමේ අනුපාතය","පරිමාව","බර"],
+  a:1
+ },
+
+ {
+  q:"DNA වල ප්‍රධාන කාර්යයක් වන්නේ?",
+  o:["ශක්තිය නිපදවීම","ජානමය තොරතුරු ගබඩා කිරීම","ඔක්සිජන් ගබඩා කිරීම","ජලය නිපදවීම"],
+  a:1
+ },
+
+ {
+  q:"Newtonගේ දෙවන නියමය සම්බන්ධ වන්නේ?",
+  o:["F = ma","E = mc²","V = IR²","P = VI²"],
+  a:0
+ },
+
+ {
+  q:"pH = 7 වන ද්‍රාවණයක් සාමාන්‍යයෙන්?",
+  o:["ආම්ලික","ක්ෂාරීය","නියුට්‍රල්","ඉතා ආම්ලික"],
+  a:2
+ },
+
+ {
+  q:"Photosynthesis සඳහා ප්‍රධාන වශයෙන් අවශ්‍ය ශක්ති මූලාශ්‍රය?",
+  o:["ශබ්දය","සූර්යාලෝකය","ගුරුත්වය","චුම්බකත්වය"],
+  a:1
+ }
+
+];
+
+let qIndex=0;
+let score=0;
+let answered=false;
+
+function loadQuestion(){
+
+ answered=false;
+
+ let q=questions[qIndex];
+
+ document.getElementById("questionNumber").textContent=
+ "Question "+(qIndex+1)+" / "+questions.length;
+
+ document.getElementById("question").textContent=q.q;
+
+ let html="";
+
+ q.o.forEach((option,i)=>{
+  html+=`
+   <button class="option" onclick="chooseAnswer(${i},this)">
+    ${String.fromCharCode(65+i)}. ${option}
+   </button>
+  `;
+ });
+
+ document.getElementById("options").innerHTML=html;
+
+ document.getElementById("nextBtn").textContent=
+ qIndex===questions.length-1 ? "Finish 🏆":"Next →";
+}
+
+function chooseAnswer(i,el){
+
+ if(answered)return;
+
+ answered=true;
+
+ let q=questions[qIndex];
+
+ if(i===q.a){
+  el.classList.add("correct");
+  score++;
+ }else{
+  el.classList.add("wrong");
+  document.querySelectorAll(".option")[q.a].classList.add("correct");
+ }
+
+}
+
+function nextQuestion(){
+
+ if(!answered){
+  alert("මුලින් answer එකක් select කරන්න.");
+  return;
+ }
+
+ if(qIndex<questions.length-1){
+  qIndex++;
+  loadQuestion();
+ }else{
+
+  let gained=score*20;
+
+  userData.xp+=gained;
+  userData.tests++;
+
+  localStorage.setItem("edunovaUser",JSON.stringify(userData));
+
+  document.getElementById("quiz").innerHTML=`
+   <div class="result">
+    <div style="font-size:60px">🏆</div>
+    <h2>Quiz Complete!</h2>
+    <p style="margin:10px;color:var(--muted)">
+     ඔයාගේ score එක
+    </p>
+    <h1>${score} / ${questions.length}</h1>
+    <p style="margin:10px">
+     +${gained} XP ⭐
+    </p>
+    <button class="primaryBtn" onclick="restartQuiz()">
+     නැවත කරන්න 🔄
+    </button>
+   </div>
+  `;
+
+  updateStats();
+ }
+}
+
+function restartQuiz(){
+
+ qIndex=0;
+ score=0;
+
+ document.getElementById("quiz").innerHTML=`
+  <div class="tag">Mixed A/L</div>
+  <div id="questionNumber"></div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <button class="primaryBtn" onclick="nextQuestion()" id="nextBtn">Next →</button>
+ `;
+
+ loadQuestion();
+}
+
+loadQuestion();
+
+
+/* ---------------- PAPERS ---------------- */
+
+function paperMessage(){
+
+ alert(
+ "📄 PDF Library\n\n"+
+ "මේ demo version එකේ PDF buttons ready කරලා තියෙනවා.\n"+
+ "ඔයාගේ legally available PDF files / links පසුව මෙතනට connect කරන්න පුළුවන්."
+ );
+}
+
+
+/* ---------------- AI ---------------- */
+
+function sendChat(){
+
+ let input=document.getElementById("chatInput");
+ let text=input.value.trim();
+
+ if(!text)return;
+
+ let box=document.getElementById("chatMessages");
+
+ box.innerHTML+=`
+  <div class="msg user">${escapeHTML(text)}</div>
+ `;
+
+ input.value="";
+
+ setTimeout(()=>{
+
+  let reply=getAIReply(text);
+
+  box.innerHTML+=`
+   <div class="msg bot">${reply}</div>
+  `;
+
+  box.scrollTop=box.scrollHeight;
+
+ },500);
+}
+
+function getAIReply(text){
+
+ let t=text.toLowerCase();
+
+ if(t.includes("math") || t.includes("ගණිත")){
+  return "📐 Mathematics: ප්‍රශ්නය step-by-step කඩලා බලමු. මුලින් given values හඳුනාගෙන, භාවිතා කරන formula එක තෝරන්න. ඔයාට තියෙන exact question එක මෙතන type කරන්න.";
+ }
+
+ if(t.includes("bio") || t.includes("ජීව")){
+  return "🧬 Biology: concept එක මුලින් simple idea එකකට කඩලා, පසුව keywords මතක තියාගන්න. ඔයාට තේරුම්ගන්න අමාරු Biology topic එක කියන්න.";
+ }
+
+ if(t.includes("physics") || t.includes("භෞත")){
+  return "⚡ Physics: Given → Formula → Substitute → Unit කියන pattern එකෙන් numerical එකක් solve කරන්න. Question එක එවන්න.";
+ }
+
+ if(t.includes("chem") || t.includes("රසා")){
+  return "⚗️ Chemistry: reaction එකේ reactants, products සහ conditions වෙන වෙනම හඳුනාගන්න. Topic එක කියන්න, මම simple Sinhala explanation එකක් දෙන්නම්.";
+ }
+
+ if(t.includes("motivat") || t.includes("අද") || t.includes("හිත")){
+  return "❤️ ඔයාට හැමදාම perfect වෙන්න ඕන නෑ. අද ඊයේට වඩා පොඩ්ඩක් හොඳට වැඩ කළා නම් ඒක progress එකක්. Keep going! 🚀";
+ }
+
+ return "🤖 හොඳ ප්‍රශ්නයක්! මම ඒක simple Sinhala වලින් explain කරන්නම්. Topic එක සහ ඔයාට තියෙන ප්‍රශ්නය ටිකක් පැහැදිලිව type කරන්න.";
+}
+
+function escapeHTML(str){
+ return str.replace(/[&<>"']/g,m=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#039;"
+ }[m]));
+}
+
+
+/* ---------------- COUNTDOWN ---------------- */
+
+function countdown(id,year){
+
+ let target=new Date(year,10,1).getTime();
+
+ setInterval(()=>{
+
+  let now=new Date().getTime();
+  let diff=target-now;
+
+  if(diff<=0){
+   document.getElementById(id).textContent="Exam Time! 🎯";
+   return;
+  }
+
+  let days=Math.floor(diff/(1000*60*60*24));
+  let hours=Math.floor((diff/(1000*60*60))%24);
+  let mins=Math.floor((diff/(1000*60))%60);
+
+  document.getElementById(id).textContent=
+   days+"d "+hours+"h "+mins+"m";
+
+ },1000);
+}
+
+countdown("count2027",2027);
+countdown("count2028",2028);
+countdown("count2029",2029);
+
+
+/* ---------------- MOTIVATION ---------------- */
+
+const motivations=[
+ "🔥 අද පැය 1ක් focus වෙලා කරන වැඩේ හෙට ඔයාට ලොකු advantage එකක්.",
+ "🚀 Small progress is still progress. නවතින්න එපා.",
+ "📚 එක chapter එකක් complete කිරීමත් victory එකක්.",
+ "🎯 Target එක මතක තියාගන්න. අද වැඩ කරන්න.",
+ "💪 අමාරු topic එකක් කියන්නේ impossible topic එකක් නෙවෙයි.",
+ "⭐ ඔයාට පුළුවන්. Start කරන්න — motivation එක පස්සේ එයි.",
+ "❤️ Future you will thank you for studying today."
+];
+
+document.getElementById("motivation").textContent=
+ motivations[new Date().getDate()%motivations.length];
+
+
+/* ---------------- SEARCH ---------------- */
+
+function searchContent(){
+
+ let value=document.getElementById("search").value.toLowerCase().trim();
+
+ if(!value)return;
+
+ let subjects=["mathematics","biology","physics","chemistry"];
+
+ if(subjects.includes(value)){
+  showPage("subjects");
+ }
+}
+
+
+/* ---------------- PROFILE BUTTON ---------------- */
+
+document.querySelector(".profileBtn").textContent=
+ userData ? userData.name.charAt(0).toUpperCase():"E";
+
+</script>
+
+</body>
+</html>
