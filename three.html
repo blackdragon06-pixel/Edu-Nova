@@ -1,0 +1,2985 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EduNova 📚 | Smart A/L Study</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;500;600;700;800&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+ --bg:#f4f6ff;
+ --card:#fff;
+ --text:#172033;
+ --muted:#70788d;
+ --primary:#635bff;
+ --primary2:#8a82ff;
+ --green:#00a884;
+ --pink:#f65399;
+ --orange:#ff9f43;
+ --red:#ff5b6b;
+ --blue:#2997ff;
+ --border:#e4e7f1;
+ --shadow:0 12px 35px rgba(45,48,90,.09)
+}
+
+body.dark{
+ --bg:#0b0f1d;
+ --card:#171b2c;
+ --text:#f5f7ff;
+ --muted:#aeb5c9;
+ --border:#292e44;
+ --shadow:0 12px 35px rgba(0,0,0,.35)
+}
+
+body{
+ font-family:'Noto Sans Sinhala',sans-serif;
+ background:var(--bg);
+ color:var(--text);
+ min-height:100vh;
+ transition:.3s
+}
+
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
+
+/* LOGIN */
+
+#loginPage{
+ min-height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ padding:20px;
+ background:
+ radial-gradient(circle at 10% 10%,rgba(99,91,255,.23),transparent 30%),
+ radial-gradient(circle at 90% 90%,rgba(246,83,153,.18),transparent 30%),
+ var(--bg)
+}
+
+.loginCard{
+ width:min(450px,100%);
+ padding:35px;
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:30px;
+ box-shadow:var(--shadow);
+ text-align:center;
+ animation:pop .6s ease
+}
+
+@keyframes pop{
+ from{opacity:0;transform:translateY(25px) scale(.96)}
+ to{opacity:1;transform:none}
+}
+
+.logoIcon{
+ width:82px;height:82px;
+ margin:auto;
+ display:grid;
+ place-items:center;
+ border-radius:25px;
+ background:linear-gradient(135deg,var(--primary),var(--pink));
+ color:white;
+ font-size:42px
+}
+
+.brand{
+ font-size:31px;
+ font-weight:800;
+ margin-top:15px
+}
+
+.brand span{color:var(--primary)}
+
+.input{
+ width:100%;
+ padding:14px 16px;
+ border-radius:14px;
+ border:1px solid var(--border);
+ background:var(--bg);
+ color:var(--text);
+ outline:none;
+ margin:6px 0
+}
+
+.input:focus{
+ border-color:var(--primary);
+ box-shadow:0 0 0 3px rgba(99,91,255,.1)
+}
+
+.btn{
+ padding:12px 17px;
+ border-radius:13px;
+ font-weight:700;
+ transition:.2s
+}
+
+.btn:hover{transform:translateY(-2px)}
+
+.primary{
+ color:#fff;
+ background:linear-gradient(135deg,var(--primary),var(--primary2))
+}
+
+.full{width:100%}
+
+.otp{
+ margin-top:15px;
+ padding:18px;
+ background:var(--bg);
+ border-radius:18px
+}
+
+.otpNumber{
+ color:var(--primary);
+ font-size:29px;
+ font-weight:800;
+ letter-spacing:8px;
+ margin:8px
+}
+
+.muted{color:var(--muted)}
+
+/* APP */
+
+#app{display:none}
+
+.sidebar{
+ position:fixed;
+ left:0;top:0;bottom:0;
+ width:255px;
+ padding:18px 14px;
+ background:var(--card);
+ border-right:1px solid var(--border);
+ z-index:100;
+ overflow:auto
+}
+
+.sideBrand{
+ padding:12px 14px 25px;
+ font-size:23px;
+ font-weight:800
+}
+
+.sideBrand span{color:var(--primary)}
+
+.nav{
+ width:100%;
+ text-align:left;
+ padding:12px 14px;
+ border-radius:12px;
+ background:none;
+ color:var(--muted);
+ margin:3px 0
+}
+
+.nav:hover,.nav.active{
+ color:var(--primary);
+ background:rgba(99,91,255,.1)
+}
+
+.main{
+ margin-left:255px;
+ padding:24px;
+ max-width:1600px
+}
+
+.topbar{
+ display:flex;
+ gap:10px;
+ align-items:center;
+ margin-bottom:22px
+}
+
+.search{
+ flex:1;
+ padding:13px 17px;
+ border-radius:14px;
+ border:1px solid var(--border);
+ background:var(--card);
+ color:var(--text);
+ outline:none
+}
+
+.iconBtn{
+ width:44px;height:44px;
+ border-radius:13px;
+ background:var(--card);
+ color:var(--text);
+ border:1px solid var(--border)
+}
+
+.avatarBtn{
+ width:44px;height:44px;
+ border-radius:50%;
+ background:linear-gradient(135deg,var(--primary),var(--pink));
+ color:white;
+ font-weight:800
+}
+
+.mobileBtn{display:none}
+
+/* PAGES */
+
+.page{display:none}
+.page.active{display:block;animation:fade .3s}
+
+@keyframes fade{
+ from{opacity:0;transform:translateY(8px)}
+ to{opacity:1;transform:none}
+}
+
+.hero{
+ padding:30px;
+ color:#fff;
+ border-radius:25px;
+ background:linear-gradient(120deg,#635bff,#8b82ff,#f65399);
+ margin-bottom:22px;
+ position:relative;
+ overflow:hidden
+}
+
+.hero:after{
+ content:"";
+ position:absolute;
+ width:220px;height:220px;
+ right:-65px;top:-80px;
+ border-radius:50%;
+ background:rgba(255,255,255,.12)
+}
+
+.hero h1{font-size:29px}
+.hero p{margin-top:6px;opacity:.9}
+
+/* CARDS */
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:15px
+}
+
+.grid3{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:15px
+}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:20px;
+ padding:20px;
+ box-shadow:var(--shadow)
+}
+
+.stat{
+ display:flex;
+ align-items:center;
+ gap:14px
+}
+
+.statIcon{
+ width:50px;height:50px;
+ display:grid;
+ place-items:center;
+ border-radius:15px;
+ background:rgba(99,91,255,.1);
+ font-size:23px
+}
+
+.stat h2{font-size:22px}
+.stat small{color:var(--muted)}
+
+.sectionTitle{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:25px 0 14px
+}
+
+/* SUBJECTS */
+
+.subjectGrid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:15px
+}
+
+.subject{
+ cursor:pointer;
+ transition:.25s
+}
+
+.subject:hover{
+ transform:translateY(-5px)
+}
+
+.subjectIcon{
+ font-size:40px;
+ margin-bottom:10px
+}
+
+.subject p{
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.7
+}
+
+.progress{
+ height:8px;
+ border-radius:20px;
+ overflow:hidden;
+ background:var(--bg);
+ margin-top:14px
+}
+
+.progress div{
+ height:100%;
+ background:linear-gradient(90deg,var(--primary),var(--pink));
+ border-radius:20px
+}
+
+/* TOOLS */
+
+.tools{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:15px
+}
+
+.tool{
+ cursor:pointer;
+ transition:.2s
+}
+
+.tool:hover{transform:translateY(-4px)}
+
+.toolIcon{
+ font-size:31px;
+ margin-bottom:8px
+}
+
+/* MCQ */
+
+.quiz{
+ max-width:850px;
+ margin:auto
+}
+
+.quizHeader{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
+ margin-bottom:15px
+}
+
+.select{
+ padding:10px 12px;
+ border:1px solid var(--border);
+ border-radius:12px;
+ background:var(--card);
+ color:var(--text)
+}
+
+.questionNo{
+ color:var(--muted);
+ font-size:13px
+}
+
+.question{
+ font-size:21px;
+ font-weight:800;
+ margin:18px 0
+}
+
+.option{
+ display:block;
+ width:100%;
+ text-align:left;
+ padding:15px;
+ margin:7px 0;
+ border-radius:14px;
+ border:1px solid var(--border);
+ background:var(--card);
+ color:var(--text)
+}
+
+.option:hover{border-color:var(--primary)}
+.option.correct{
+ border-color:var(--green);
+ background:rgba(0,168,132,.11)
+}
+.option.wrong{
+ border-color:var(--red);
+ background:rgba(255,91,107,.11)
+}
+
+.explanation{
+ margin-top:12px;
+ padding:12px;
+ border-radius:13px;
+ background:var(--bg);
+ color:var(--muted)
+}
+
+/* NOTES */
+
+textarea{
+ width:100%;
+ min-height:220px;
+ padding:15px;
+ border-radius:15px;
+ border:1px solid var(--border);
+ background:var(--bg);
+ color:var(--text);
+ outline:none;
+ resize:vertical
+}
+
+.noteGrid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:15px;
+ margin-top:15px
+}
+
+/* PAPERS */
+
+.paperGrid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:15px
+}
+
+.tag{
+ display:inline-block;
+ padding:5px 9px;
+ border-radius:20px;
+ background:rgba(99,91,255,.1);
+ color:var(--primary);
+ font-size:11px;
+ margin-bottom:10px
+}
+
+/* TIMER */
+
+.timerCard{
+ max-width:550px;
+ margin:auto;
+ text-align:center
+}
+
+.timerCircle{
+ width:230px;height:230px;
+ margin:20px auto;
+ border-radius:50%;
+ display:grid;
+ place-items:center;
+ border:10px solid rgba(99,91,255,.12);
+ background:var(--bg)
+}
+
+.timerText{
+ font-size:43px;
+ font-weight:800;
+ color:var(--primary)
+}
+
+.timerControls{
+ display:flex;
+ justify-content:center;
+ gap:8px;
+ flex-wrap:wrap
+}
+
+/* COUNTDOWN */
+
+.countGrid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:15px
+}
+
+.count{text-align:center}
+
+.year{
+ color:var(--primary);
+ font-weight:800;
+ font-size:23px
+}
+
+.countValue{
+ font-size:25px;
+ font-weight:800;
+ margin-top:10px
+}
+
+/* CHAT */
+
+.chat{
+ max-width:850px;
+ margin:auto
+}
+
+.messages{
+ height:420px;
+ overflow:auto;
+ padding:8px
+}
+
+.message{
+ max-width:82%;
+ padding:13px 16px;
+ border-radius:17px;
+ margin:8px 0
+}
+
+.bot{background:var(--bg)}
+.me{
+ margin-left:auto;
+ color:white;
+ background:var(--primary)
+}
+
+.chatRow{
+ display:flex;
+ gap:8px;
+ margin-top:10px
+}
+
+.chatRow .input{margin:0}
+
+/* PROFILE */
+
+.profile{
+ max-width:700px;
+ margin:auto;
+ text-align:center
+}
+
+.bigAvatar{
+ width:100px;height:100px;
+ display:grid;
+ place-items:center;
+ margin:5px auto 15px;
+ border-radius:50%;
+ color:white;
+ font-size:40px;
+ font-weight:800;
+ background:linear-gradient(135deg,var(--primary),var(--pink))
+}
+
+/* ACHIEVEMENTS */
+
+.badge{
+ text-align:center
+}
+
+.badgeIcon{
+ font-size:43px;
+ margin-bottom:8px
+}
+
+/* RECENT */
+
+.recent{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ padding:12px;
+ border-radius:13px;
+ background:var(--bg);
+ margin:7px 0
+}
+
+/* TOAST */
+
+.toast{
+ position:fixed;
+ right:22px;
+ bottom:22px;
+ padding:14px 18px;
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:14px;
+ box-shadow:var(--shadow);
+ transform:translateY(100px);
+ opacity:0;
+ transition:.3s;
+ z-index:500
+}
+
+.toast.show{
+ opacity:1;
+ transform:none
+}
+
+/* MOBILE */
+
+@media(max-width:1050px){
+ .grid,.subjectGrid{
+  grid-template-columns:repeat(2,1fr)
+ }
+ .tools,.paperGrid,.noteGrid{
+  grid-template-columns:repeat(2,1fr)
+ }
+}
+
+@media(max-width:750px){
+
+ .sidebar{
+  transform:translateX(-100%);
+  transition:.3s
+ }
+
+ .sidebar.open{
+  transform:none
+ }
+
+ .main{
+  margin-left:0;
+  padding:14px
+ }
+
+ .mobileBtn{
+  display:block
+ }
+
+ .grid,.subjectGrid,.tools,.paperGrid,.noteGrid,.countGrid,.grid3{
+  grid-template-columns:1fr
+ }
+
+ .hero h1{
+  font-size:24px
+ }
+
+ .topbar{
+  flex-wrap:wrap
+ }
+
+ .search{
+  order:3;
+  flex-basis:100%
+ }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+
+<div id="loginPage">
+
+<div class="loginCard">
+
+ <div class="logoIcon">📚</div>
+
+ <div class="brand">Edu<span>Nova</span></div>
+
+ <p class="muted" style="margin:7px 0 22px">
+  Smart A/L Learning Space ✨
+ </p>
+
+ <div id="loginForm">
+
+  <input id="loginName"
+  class="input"
+  placeholder="ඔයාගේ නම">
+
+  <input id="loginContact"
+  class="input"
+  placeholder="Email හෝ Phone Number">
+
+  <button class="btn primary full"
+  onclick="sendOTP()">
+   🔐 OTP ලබාගන්න
+  </button>
+
+  <p class="muted"
+  style="font-size:12px;margin-top:12px">
+   Free Demo Authentication
+  </p>
+
+ </div>
+
+ <div id="otpArea" class="otp hidden">
+
+  <b>OTP Verification</b>
+
+  <div id="otpNumber" class="otpNumber">
+   000000
+  </div>
+
+  <input id="otpInput"
+  class="input"
+  maxlength="6"
+  placeholder="OTP අංක 6">
+
+  <button class="btn primary full"
+  onclick="verifyOTP()">
+   🚀 Login
+  </button>
+
+ </div>
+
+</div>
+
+</div>
+
+
+<!-- ================= APP ================= -->
+
+<div id="app">
+
+<aside id="sidebar" class="sidebar">
+
+ <div class="sideBrand">
+  📚 Edu<span>Nova</span>
+ </div>
+
+ <button class="nav active"
+ onclick="go('dashboard',this)">
+  🏠 Dashboard
+ </button>
+
+ <button class="nav"
+ onclick="go('subjects',this)">
+  📚 Subjects
+ </button>
+
+ <button class="nav"
+ onclick="go('mcq',this)">
+  🧠 MCQ Arena
+ </button>
+
+ <button class="nav"
+ onclick="go('papers',this)">
+  📄 Paper Library
+ </button>
+
+ <button class="nav"
+ onclick="go('notes',this)">
+  📝 My Notes
+ </button>
+
+ <button class="nav"
+ onclick="go('mindmaps',this)">
+  🗺️ Mind Maps
+ </button>
+
+ <button class="nav"
+ onclick="go('timer',this)">
+  ⏱️ Focus Timer
+ </button>
+
+ <button class="nav"
+ onclick="go('ai',this)">
+  🤖 Sinhala AI
+ </button>
+
+ <button class="nav"
+ onclick="go('exam',this)">
+  ⏳ A/L Countdown
+ </button>
+
+ <button class="nav"
+ onclick="go('achievements',this)">
+  🏆 Achievements
+ </button>
+
+ <button class="nav"
+ onclick="go('profile',this)">
+  👤 Profile
+ </button>
+
+</aside>
+
+
+<main class="main">
+
+<div class="topbar">
+
+ <button class="iconBtn mobileBtn"
+ onclick="toggleSidebar()">☰</button>
+
+ <input id="search"
+ class="search"
+ placeholder="🔎 Search EduNova..."
+ oninput="searchSite()">
+
+ <button class="iconBtn"
+ onclick="toggleDark()">
+  🌙
+ </button>
+
+ <button id="topAvatar"
+ class="avatarBtn"
+ onclick="go('profile')">
+  E
+ </button>
+
+</div>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard" class="page active">
+
+<div class="hero">
+
+ <h1>
+  ආයුබෝවන්, <span id="helloName">Student</span>! 👋
+ </h1>
+
+ <p>
+  අදත් ඔයාගේ A/L dream එක වෙනුවෙන් වැඩ කරමු. 🚀
+ </p>
+
+</div>
+
+
+<div class="grid">
+
+ <div class="card stat">
+  <div class="statIcon">🔥</div>
+  <div>
+   <h2 id="streak">1</h2>
+   <small>Study Streak</small>
+  </div>
+ </div>
+
+ <div class="card stat">
+  <div class="statIcon">⭐</div>
+  <div>
+   <h2 id="xp">0</h2>
+   <small>XP Points</small>
+  </div>
+ </div>
+
+ <div class="card stat">
+  <div class="statIcon">🏆</div>
+  <div>
+   <h2 id="level">1</h2>
+   <small>Current Level</small>
+  </div>
+ </div>
+
+ <div class="card stat">
+  <div class="statIcon">🧠</div>
+  <div>
+   <h2 id="tests">0</h2>
+   <small>Tests Completed</small>
+  </div>
+ </div>
+
+</div>
+
+
+<div class="sectionTitle">
+
+ <h2>📊 Today's Goal</h2>
+
+ <span id="goalPercent"
+ style="color:var(--primary);font-weight:800">
+  0%
+ </span>
+
+</div>
+
+<div class="card">
+
+ <p class="muted">
+  අද quizzes / focus sessions complete කරලා
+  daily target එක reach කරන්න.
+ </p>
+
+ <div class="progress">
+  <div id="goalBar" style="width:0%"></div>
+ </div>
+
+</div>
+
+
+<div class="sectionTitle">
+ <h2>📚 Subjects</h2>
+</div>
+
+
+<div class="subjectGrid">
+
+ <div class="card subject searchable"
+ onclick="subjectMCQ('Mathematics')">
+
+  <div class="subjectIcon">📐</div>
+
+  <h3>Mathematics</h3>
+
+  <p>
+   Algebra • Calculus • Mechanics • Statistics
+  </p>
+
+  <div class="progress">
+   <div style="width:58%"></div>
+  </div>
+
+ </div>
+
+
+ <div class="card subject searchable"
+ onclick="subjectMCQ('Biology')">
+
+  <div class="subjectIcon">🧬</div>
+
+  <h3>Biology</h3>
+
+  <p>
+   Cell • Genetics • Human Biology • Ecology
+  </p>
+
+  <div class="progress">
+   <div style="width:44%"></div>
+  </div>
+
+ </div>
+
+
+ <div class="card subject searchable"
+ onclick="subjectMCQ('Physics')">
+
+  <div class="subjectIcon">⚡</div>
+
+  <h3>Physics</h3>
+
+  <p>
+   Mechanics • Waves • Electricity • Energy
+  </p>
+
+  <div class="progress">
+   <div style="width:37%"></div>
+  </div>
+
+ </div>
+
+
+ <div class="card subject searchable"
+ onclick="subjectMCQ('Chemistry')">
+
+  <div class="subjectIcon">⚗️</div>
+
+  <h3>Chemistry</h3>
+
+  <p>
+   Organic • Inorganic • Physical Chemistry
+  </p>
+
+  <div class="progress">
+   <div style="width:30%"></div>
+  </div>
+
+ </div>
+
+</div>
+
+
+<div class="sectionTitle">
+ <h2>✨ Smart Tools</h2>
+</div>
+
+
+<div class="tools">
+
+ <div class="card tool"
+ onclick="go('mcq')">
+
+  <div class="toolIcon">🧠</div>
+  <h3>MCQ Arena</h3>
+  <p class="muted">
+   Chapter practice + score + XP
+  </p>
+
+ </div>
+
+
+ <div class="card tool"
+ onclick="go('timer')">
+
+  <div class="toolIcon">⏱️</div>
+  <h3>Focus Timer</h3>
+  <p class="muted">
+   25 minute deep focus
+  </p>
+
+ </div>
+
+
+ <div class="card tool"
+ onclick="go('ai')">
+
+  <div class="toolIcon">🤖</div>
+  <h3>Sinhala AI</h3>
+  <p class="muted">
+   Study questions අහන්න
+  </p>
+
+ </div>
+
+</div>
+
+
+<div class="sectionTitle">
+ <h2>🕘 Recently Studied</h2>
+</div>
+
+<div class="card" id="recentList"></div>
+
+
+<div class="sectionTitle">
+ <h2>💡 Today's Motivation</h2>
+</div>
+
+<div class="card">
+
+ <h3 id="motivation"></h3>
+
+ <p class="muted" style="margin-top:7px">
+  — EduNova ❤️
+ </p>
+
+</div>
+
+</section>
+
+
+<!-- ================= SUBJECTS ================= -->
+
+<section id="subjects" class="page">
+
+<div class="hero">
+
+ <h1>📚 A/L Subjects</h1>
+
+ <p>
+  Subject එකක් තෝරලා chapter-wise practice කරන්න.
+ </p>
+
+</div>
+
+
+<div class="subjectGrid">
+
+ <div class="card subject">
+
+  <div class="subjectIcon">📐</div>
+
+  <h2>Mathematics</h2>
+
+  <p>
+   Functions<br>
+   Calculus<br>
+   Algebra<br>
+   Mechanics<br>
+   Statistics
+  </p>
+
+  <button class="btn primary"
+  style="margin-top:15px"
+  onclick="subjectMCQ('Mathematics')">
+   🧠 Practice
+  </button>
+
+ </div>
+
+
+ <div class="card subject">
+
+  <div class="subjectIcon">🧬</div>
+
+  <h2>Biology</h2>
+
+  <p>
+   Cell Biology<br>
+   Genetics<br>
+   Human Biology<br>
+   Ecology
+  </p>
+
+  <button class="btn primary"
+  style="margin-top:15px"
+  onclick="subjectMCQ('Biology')">
+   🧠 Practice
+  </button>
+
+ </div>
+
+
+ <div class="card subject">
+
+  <div class="subjectIcon">⚡</div>
+
+  <h2>Physics</h2>
+
+  <p>
+   Mechanics<br>
+   Waves<br>
+   Electricity<br>
+   Energy
+  </p>
+
+  <button class="btn primary"
+  style="margin-top:15px"
+  onclick="subjectMCQ('Physics')">
+   🧠 Practice
+  </button>
+
+ </div>
+
+
+ <div class="card subject">
+
+  <div class="subjectIcon">⚗️</div>
+
+  <h2>Chemistry</h2>
+
+  <p>
+   Atomic Structure<br>
+   Bonding<br>
+   Organic<br>
+   Physical Chemistry
+  </p>
+
+  <button class="btn primary"
+  style="margin-top:15px"
+  onclick="subjectMCQ('Chemistry')">
+   🧠 Practice
+  </button>
+
+ </div>
+
+</div>
+
+</section>
+
+
+<!-- ================= MCQ ================= -->
+
+<section id="mcq" class="page">
+
+<div class="hero">
+
+ <h1>🧠 MCQ Arena</h1>
+
+ <p>
+  Correct answers වලින් XP එකතු කරලා level up වෙන්න.
+ </p>
+
+</div>
+
+
+<div class="card quiz">
+
+ <div class="quizHeader">
+
+  <select id="quizSubject"
+  class="select"
+  onchange="changeQuiz()">
+
+   <option value="Mixed">Mixed A/L</option>
+   <option value="Mathematics">Mathematics</option>
+   <option value="Biology">Biology</option>
+   <option value="Physics">Physics</option>
+   <option value="Chemistry">Chemistry</option>
+
+  </select>
+
+ </div>
+
+
+ <div id="questionNo"
+ class="questionNo">
+ </div>
+
+
+ <div id="question"
+ class="question">
+ </div>
+
+
+ <div id="options"></div>
+
+
+ <button id="nextButton"
+ class="btn primary full"
+ onclick="nextQuestion()">
+  Next →
+ </button>
+
+</div>
+
+</section>
+
+
+<!-- ================= PAPERS ================= -->
+
+<section id="papers" class="page">
+
+<div class="hero">
+
+ <h1>📄 Paper Library</h1>
+
+ <p>
+  Past Papers • Model Papers • School Papers
+ </p>
+
+</div>
+
+
+<div class="paperGrid">
+
+ <div class="card searchable">
+
+  <span class="tag">Mathematics</span>
+
+  <h3>A/L Past Papers</h3>
+
+  <p class="muted">
+   Mathematics past paper collection.
+  </p>
+
+  <button class="btn primary"
+  style="margin-top:15px"
+  onclick="paperAction('Mathematics Past Papers')">
+   📄 Open
+  </button>
+
+ </div>
+
+
+ <div class="card searchable">
+
+  <span class="tag">Biology</span>
+
+  <h3>Biology Model Papers</h3>
+
+  <p class="muted">
+   Model paper practice.
+  </p>
+
+  <button class="btn primary"
+  style="margin-top:15px"
+  onclick="paperAction('Biology Model Papers')">
+   📄 Open
+  </button>
+
+ </div>
+
+
+ <div class="card searchable">
+
+  <span class="tag">Physics</span>
+
+  <h3>Physics School Papers</h3>
+
+  <p class="muted">
+   School paper revision.
+  </p>
+
+  <button class="btn primary"
+  style="margin-top:15px"
+  onclick="paperAction('Physics School Papers')">
+   📄 Open
+  </button>
+
+ </div>
+
+
+ <div class="card searchable">
+
+  <span class="tag">Chemistry</span>
+
+  <h3>Chemistry Model Papers</h3>
+
+  <p class="muted">
+   Exam practice.
+  </p>
+
+  <button class="btn primary"
+  style="margin-top:15px"
+  onclick="paperAction('Chemistry Model Papers')">
+   📄 Open
+  </button>
+
+ </div>
+
+
+ <div class="card searchable">
+
+  <span class="tag">Mixed</span>
+
+  <h3>Full Mock Exam</h3>
+
+  <p class="muted">
+   Full A/L style practice.
+  </p>
+
+  <button class="btn primary"
+  style="margin-top:15px"
+  onclick="paperAction('Full Mock Exam')">
+   📄 Open
+  </button>
+
+ </div>
+
+
+ <div class="card searchable">
+
+  <span class="tag">Revision</span>
+
+  <h3>Quick Revision Papers</h3>
+
+  <p class="muted">
+   Fast revision sessions.
+  </p>
+
+  <button class="btn primary"
+  style="margin-top:15px"
+  onclick="paperAction('Quick Revision Papers')">
+   📄 Open
+  </button>
+
+ </div>
+
+</div>
+
+</section>
+
+
+<!-- ================= NOTES ================= -->
+
+<section id="notes" class="page">
+
+<div class="hero">
+
+ <h1>📝 My Notes</h1>
+
+ <p>
+  ඔයාගේ personal notes save කරගන්න.
+ </p>
+
+</div>
+
+
+<div class="card">
+
+ <input id="noteTitle"
+ class="input"
+ placeholder="Note title">
+
+ <textarea id="noteText"
+ placeholder="ඔයාගේ Sinhala / English note එක මෙතන ලියන්න..."></textarea>
+
+ <button class="btn primary"
+ style="margin-top:10px"
+ onclick="saveNote()">
+  💾 Save Note
+ </button>
+
+</div>
+
+
+<div class="sectionTitle">
+ <h2>📚 Saved Notes</h2>
+</div>
+
+<div id="notesList" class="noteGrid"></div>
+
+</section>
+
+
+<!-- ================= MIND MAP ================= -->
+
+<section id="mindmaps" class="page">
+
+<div class="hero">
+
+ <h1>🗺️ Sinhala Mind Maps</h1>
+
+ <p>
+  Concepts එක බැල්මෙන් revise කරන්න.
+ </p>
+
+</div>
+
+
+<div class="grid3">
+
+ <div class="card">
+
+  <span class="tag">Mathematics</span>
+
+  <h2>📐 Calculus</h2>
+
+  <p style="margin-top:15px;line-height:2">
+   Functions<br>
+   ↓<br>
+   Limits<br>
+   ↓<br>
+   Differentiation<br>
+   ↓<br>
+   Integration<br>
+   ↓<br>
+   Applications
+  </p>
+
+ </div>
+
+
+ <div class="card">
+
+  <span class="tag">Biology</span>
+
+  <h2>🧬 Cell</h2>
+
+  <p style="margin-top:15px;line-height:2">
+   Cell<br>
+   ↓<br>
+   Organelles<br>
+   ↓<br>
+   Tissue<br>
+   ↓<br>
+   Organ<br>
+   ↓<br>
+   System
+  </p>
+
+ </div>
+
+
+ <div class="card">
+
+  <span class="tag">Physics</span>
+
+  <h2>⚡ Mechanics</h2>
+
+  <p style="margin-top:15px;line-height:2">
+   Force<br>
+   ↓<br>
+   Motion<br>
+   ↓<br>
+   Work<br>
+   ↓<br>
+   Energy<br>
+   ↓<br>
+   Momentum
+  </p>
+
+ </div>
+
+
+ <div class="card">
+
+  <span class="tag">Chemistry</span>
+
+  <h2>⚗️ Chemistry</h2>
+
+  <p style="margin-top:15px;line-height:2">
+   Atom<br>
+   ↓<br>
+   Electron<br>
+   ↓<br>
+   Bond<br>
+   ↓<br>
+   Molecule<br>
+   ↓<br>
+   Reaction
+  </p>
+
+ </div>
+
+</div>
+
+</section>
+
+
+<!-- ================= TIMER ================= -->
+
+<section id="timer" class="page">
+
+<div class="hero">
+
+ <h1>⏱️ Focus Timer</h1>
+
+ <p>
+  25 minutes focus → break → repeat.
+ </p>
+
+</div>
+
+
+<div class="card timerCard">
+
+ <h2>Pomodoro Focus</h2>
+
+ <div class="timerCircle">
+
+  <div id="timerText"
+  class="timerText">
+   25:00
+  </div>
+
+ </div>
+
+
+ <div class="timerControls">
+
+  <button class="btn primary"
+  onclick="startTimer()">
+   ▶ Start
+  </button>
+
+  <button class="btn"
+  onclick="pauseTimer()">
+   ⏸ Pause
+  </button>
+
+  <button class="btn"
+  onclick="resetTimer()">
+   🔄 Reset
+  </button>
+
+ </div>
+
+
+ <p class="muted"
+ style="margin-top:15px">
+  Session එක complete කළොත් +30 XP ⭐
+ </p>
+
+</div>
+
+</section>
+
+
+<!-- ================= AI ================= -->
+
+<section id="ai" class="page">
+
+<div class="hero">
+
+ <h1>🤖 Sinhala AI Tutor</h1>
+
+ <p>
+  ඔයාගේ personal study buddy ❤️
+ </p>
+
+</div>
+
+
+<div class="card chat">
+
+ <div id="messages" class="messages">
+
+  <div class="message bot">
+   👋 ආයුබෝවන්! මම EduNova AI.<br><br>
+   Maths, Biology, Physics, Chemistry
+   ගැන මගෙන් අහන්න.
+  </div>
+
+ </div>
+
+
+ <div class="chatRow">
+
+  <input id="chatInput"
+  class="input"
+  placeholder="ප්‍රශ්නය Sinhala වලින් අහන්න..."
+  onkeydown="if(event.key==='Enter')sendAI()">
+
+  <button class="btn primary"
+  onclick="sendAI()">
+   ➤
+  </button>
+
+ </div>
+
+</div>
+
+</section>
+
+
+<!-- ================= COUNTDOWN ================= -->
+
+<section id="exam" class="page">
+
+<div class="hero">
+
+ <h1>⏳ A/L Countdown</h1>
+
+ <p>
+  ඔයාගේ target year එක තෝරගෙන focus වෙන්න.
+ </p>
+
+</div>
+
+
+<div class="countGrid">
+
+ <div class="card count">
+
+  <div class="year">2027 A/L</div>
+
+  <div id="c2027"
+  class="countValue">
+   ...
+  </div>
+
+ </div>
+
+
+ <div class="card count">
+
+  <div class="year">2028 A/L</div>
+
+  <div id="c2028"
+  class="countValue">
+   ...
+  </div>
+
+ </div>
+
+
+ <div class="card count">
+
+  <div class="year">2029 A/L</div>
+
+  <div id="c2029"
+  class="countValue">
+   ...
+  </div>
+
+ </div>
+
+</div>
+
+</section>
+
+
+<!-- ================= ACHIEVEMENTS ================= -->
+
+<section id="achievements" class="page">
+
+<div class="hero">
+
+ <h1>🏆 Achievements</h1>
+
+ <p>
+  Study කරලා badges unlock කරන්න.
+ </p>
+
+</div>
+
+
+<div class="grid3">
+
+ <div class="card badge">
+
+  <div class="badgeIcon">🌱</div>
+
+  <h3>First Step</h3>
+
+  <p class="muted">
+   First quiz complete
+  </p>
+
+ </div>
+
+
+ <div class="card badge">
+
+  <div class="badgeIcon">🔥</div>
+
+  <h3>Streak Starter</h3>
+
+  <p class="muted">
+   Build your study streak
+  </p>
+
+ </div>
+
+
+ <div class="card badge">
+
+  <div class="badgeIcon">⭐</div>
+
+  <h3>XP Hunter</h3>
+
+  <p class="muted">
+   Collect XP
+  </p>
+
+ </div>
+
+
+ <div class="card badge">
+
+  <div class="badgeIcon">🧠</div>
+
+  <h3>MCQ Master</h3>
+
+  <p class="muted">
+   Complete quizzes
+  </p>
+
+ </div>
+
+
+ <div class="card badge">
+
+  <div class="badgeIcon">⏱️</div>
+
+  <h3>Deep Focus</h3>
+
+  <p class="muted">
+   Complete a focus session
+  </p>
+
+ </div>
+
+
+ <div class="card badge">
+
+  <div class="badgeIcon">🚀</div>
+
+  <h3>A/L Star</h3>
+
+  <p class="muted">
+   Keep moving forward
+  </p>
+
+ </div>
+
+</div>
+
+</section>
+
+
+<!-- ================= PROFILE ================= -->
+
+<section id="profile" class="page">
+
+<div class="hero">
+
+ <h1>👤 My Profile</h1>
+
+ <p>
+  ඔයාගේ EduNova journey එක.
+ </p>
+
+</div>
+
+
+<div class="card profile">
+
+ <div id="bigAvatar"
+ class="bigAvatar">
+  E
+ </div>
+
+ <h2 id="profileName">
+  Student
+ </h2>
+
+ <p id="profileContact"
+ class="muted">
+ </p>
+
+
+ <div class="grid3"
+ style="margin-top:20px">
+
+  <div class="card">
+
+   <h2 id="profileXP">0</h2>
+
+   <p class="muted">
+    XP
+   </p>
+
+  </div>
+
+
+  <div class="card">
+
+   <h2 id="profileLevel">1</h2>
+
+   <p class="muted">
+    Level
+   </p>
+
+  </div>
+
+
+  <div class="card">
+
+   <h2 id="profileTests">0</h2>
+
+   <p class="muted">
+    Tests
+   </p>
+
+  </div>
+
+ </div>
+
+
+ <input id="newName"
+ class="input"
+ placeholder="New name">
+
+ <button class="btn primary full"
+ onclick="updateProfile()">
+  💾 Update Profile
+ </button>
+
+
+ <button class="btn full"
+ style="margin-top:8px"
+ onclick="logout()">
+  🚪 Logout
+ </button>
+
+</div>
+
+</section>
+
+</main>
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+let user=JSON.parse(
+ localStorage.getItem("edunovaUser")||"null"
+);
+
+let otp="";
+
+function sendOTP(){
+
+ const name=document
+ .getElementById("loginName")
+ .value.trim();
+
+ const contact=document
+ .getElementById("loginContact")
+ .value.trim();
+
+ if(!name||!contact){
+
+  alert("නම සහ Email/Phone Number එක දෙන්න.");
+
+  return;
+ }
+
+ otp=String(
+  Math.floor(100000+Math.random()*900000)
+ );
+
+ document.getElementById("otpNumber")
+ .textContent=otp;
+
+ document.getElementById("loginForm")
+ .classList.add("hidden");
+
+ document.getElementById("otpArea")
+ .classList.remove("hidden");
+}
+
+
+function verifyOTP(){
+
+ const entered=document
+ .getElementById("otpInput")
+ .value.trim();
+
+ if(entered!==otp){
+
+  alert("OTP එක වැරදියි.");
+
+  return;
+ }
+
+ user={
+  name:document.getElementById("loginName").value.trim(),
+  contact:document.getElementById("loginContact").value.trim(),
+  xp:0,
+  tests:0,
+  streak:1,
+  notes:[],
+  recent:[],
+  lastStudy:new Date().toDateString()
+ };
+
+ localStorage.setItem(
+  "edunovaUser",
+  JSON.stringify(user)
+ );
+
+ openApp();
+}
+
+
+function openApp(){
+
+ if(!user)return;
+
+ document.getElementById("loginPage")
+ .style.display="none";
+
+ document.getElementById("app")
+ .style.display="block";
+
+ updateUI();
+ renderNotes();
+ renderRecent();
+}
+
+
+if(user)openApp();
+
+
+function logout(){
+
+ localStorage.removeItem("edunovaUser");
+
+ location.reload();
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function go(page,button){
+
+ document.querySelectorAll(".page")
+ .forEach(p=>p.classList.remove("active"));
+
+ document.getElementById(page)
+ .classList.add("active");
+
+ document.querySelectorAll(".nav")
+ .forEach(n=>n.classList.remove("active"));
+
+ if(button)button.classList.add("active");
+
+ document.getElementById("sidebar")
+ .classList.remove("open");
+
+ window.scrollTo(0,0);
+}
+
+
+function toggleSidebar(){
+
+ document.getElementById("sidebar")
+ .classList.toggle("open");
+}
+
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+function toggleDark(){
+
+ document.body.classList.toggle("dark");
+
+ localStorage.setItem(
+  "edunovaDark",
+  document.body.classList.contains("dark")
+ );
+}
+
+
+if(localStorage.getItem("edunovaDark")==="true"){
+ document.body.classList.add("dark");
+}
+
+
+/* =====================================================
+   LEVEL SYSTEM
+===================================================== */
+
+function getLevel(){
+
+ if(user.xp>=1000)return 10;
+ if(user.xp>=800)return 9;
+ if(user.xp>=650)return 8;
+ if(user.xp>=500)return 7;
+ if(user.xp>=400)return 6;
+ if(user.xp>=300)return 5;
+ if(user.xp>=200)return 4;
+ if(user.xp>=100)return 3;
+ if(user.xp>=50)return 2;
+
+ return 1;
+}
+
+
+function addXP(amount){
+
+ user.xp+=amount;
+
+ localStorage.setItem(
+  "edunovaUser",
+  JSON.stringify(user)
+ );
+
+ updateUI();
+
+ toast("+"+amount+" XP ⭐");
+}
+
+
+/* =====================================================
+   UI
+===================================================== */
+
+function updateUI(){
+
+ if(!user)return;
+
+ const level=getLevel();
+
+ const letter=
+ user.name.charAt(0).toUpperCase();
+
+ document.getElementById("helloName")
+ .textContent=user.name;
+
+ document.getElementById("streak")
+ .textContent=user.streak;
+
+ document.getElementById("xp")
+ .textContent=user.xp;
+
+ document.getElementById("level")
+ .textContent=level;
+
+ document.getElementById("tests")
+ .textContent=user.tests;
+
+ document.getElementById("profileName")
+ .textContent=user.name;
+
+ document.getElementById("profileContact")
+ .textContent=user.contact;
+
+ document.getElementById("profileXP")
+ .textContent=user.xp;
+
+ document.getElementById("profileLevel")
+ .textContent=level;
+
+ document.getElementById("profileTests")
+ .textContent=user.tests;
+
+ document.getElementById("topAvatar")
+ .textContent=letter;
+
+ document.getElementById("bigAvatar")
+ .textContent=letter;
+
+ let goal=Math.min(
+  100,
+  user.tests*20
+ );
+
+ document.getElementById("goalBar")
+ .style.width=goal+"%";
+
+ document.getElementById("goalPercent")
+ .textContent=goal+"%";
+}
+
+
+/* =====================================================
+   MCQ DATABASE
+===================================================== */
+
+const DB={
+
+ Mathematics:[
+
+ {
+  q:"x² − 9 = 0 නම් x හි අගයන්?",
+  o:["3 සහ −3","9 සහ −9","0 සහ 9","1 සහ −1"],
+  a:0,
+  e:"x²=9 නිසා x=±3."
+ },
+
+ {
+  q:"d/dx (x²) යනු?",
+  o:["x","2x","x²","2"],
+  a:1,
+  e:"Power rule අනුව derivative එක 2x."
+ },
+
+ {
+  q:"sin 90° හි අගය?",
+  o:["0","1","−1","1/2"],
+  a:1,
+  e:"sin 90° = 1."
+ },
+
+ {
+  q:"2x + 4 = 10 නම් x?",
+  o:["2","3","4","5"],
+  a:1,
+  e:"2x=6, එබැවින් x=3."
+ }
+
+ ],
+
+ Biology:[
+
+ {
+  q:"DNA හි ප්‍රධාන කාර්යය?",
+  o:["ශක්තිය නිපදවීම","ජානමය තොරතුරු ගබඩා කිරීම","ජලය නිපදවීම","උෂ්ණත්වය පාලනය"],
+  a:1,
+  e:"DNA genetic information ගබඩා කරයි."
+ },
+
+ {
+  q:"Photosynthesis ප්‍රධාන වශයෙන් සිදුවන්නේ?",
+  o:["මයිටොකොන්ඩ්‍රියාවේ","ක්ලෝරෝප්ලාස්ට් වල","රයිබෝසෝමයේ","න්‍යෂ්ටියේ"],
+  a:1,
+  e:"Chloroplasts photosynthesis සඳහා වැදගත්."
+ },
+
+ {
+  q:"ජීවයේ මූලික ඒකකය?",
+  o:["Tissue","Cell","Organ","System"],
+  a:1,
+  e:"Cell ජීවයේ මූලික ඒකකයයි."
+ },
+
+ {
+  q:"Genetic information සඳහා ප්‍රධාන molecule එක?",
+  o:["DNA","Water","Glucose","Lipid"],
+  a:0,
+  e:"DNA genetic information රැගෙන යයි."
+ }
+
+ ],
+
+ Physics:[
+
+ {
+  q:"Newtonගේ දෙවන නියමය?",
+  o:["F=ma","E=mc²","V=IR","P=VI"],
+  a:0,
+  e:"Force = mass × acceleration."
+ },
+
+ {
+  q:"Velocity හි SI unit එක?",
+  o:["N","J","m/s","W"],
+  a:2,
+  e:"Velocity = metre per second."
+ },
+
+ {
+  q:"Ohm's law?",
+  o:["V=IR","F=ma","P=F/A","Q=mcΔT"],
+  a:0,
+  e:"Ohm's law: V=IR."
+ },
+
+ {
+  q:"Acceleration හි SI unit එක?",
+  o:["m","m/s","m/s²","N"],
+  a:2,
+  e:"Acceleration = m/s²."
+ }
+
+ ],
+
+ Chemistry:[
+
+ {
+  q:"pH 7 ද්‍රාවණයක් සාමාන්‍යයෙන්?",
+  o:["ආම්ලික","ක්ෂාරීය","නියුට්‍රල්","ඉතා ආම්ලික"],
+  a:2,
+  e:"pH 7 neutral ලෙස සැලකේ."
+ },
+
+ {
+  q:"ජලයේ chemical formula එක?",
+  o:["CO₂","H₂O","O₂","NaCl"],
+  a:1,
+  e:"Water = H₂O."
+ },
+
+ {
+  q:"NaCl යනු?",
+  o:["සීනි","Sodium chloride","අම්ලයක්","වායුවක්"],
+  a:1,
+  e:"NaCl = sodium chloride."
+ },
+
+ {
+  q:"O₂ යනු?",
+  o:["Hydrogen","Oxygen","Nitrogen","Carbon dioxide"],
+  a:1,
+  e:"O₂ oxygen molecule එකයි."
+ }
+
+ ]
+
+};
+
+
+let quizSubject="Mixed";
+let questions=[];
+let current=0;
+let score=0;
+let answered=false;
+
+
+function buildQuiz(){
+
+ if(quizSubject==="Mixed"){
+
+  questions=[
+   ...DB.Mathematics,
+   ...DB.Biology,
+   ...DB.Physics,
+   ...DB.Chemistry
+  ];
+
+ }else{
+
+  questions=[...DB[quizSubject]];
+
+ }
+
+ questions=questions
+ .sort(()=>Math.random()-.5);
+
+ current=0;
+ score=0;
+
+ loadQuestion();
+}
+
+
+function changeQuiz(){
+
+ quizSubject=document
+ .getElementById("quizSubject")
+ .value;
+
+ buildQuiz();
+}
+
+
+function subjectMCQ(subject){
+
+ go("mcq");
+
+ document.getElementById("quizSubject")
+ .value=subject;
+
+ quizSubject=subject;
+
+ buildQuiz();
+}
+
+
+function loadQuestion(){
+
+ answered=false;
+
+ const q=questions[current];
+
+ document.getElementById("questionNo")
+ .textContent=
+ "Question "+(current+1)+" / "+questions.length;
+
+ document.getElementById("question")
+ .textContent=q.q;
+
+ let html="";
+
+ q.o.forEach((option,i)=>{
+
+  html+=`
+   <button class="option"
+   onclick="answer(${i},this)">
+   ${String.fromCharCode(65+i)}. ${option}
+   </button>
+  `;
+
+ });
+
+ document.getElementById("options")
+ .innerHTML=html;
+
+ document.getElementById("nextButton")
+ .textContent=
+ current===questions.length-1
+ ?"Finish 🏆":"Next →";
+}
+
+
+function answer(index,element){
+
+ if(answered)return;
+
+ answered=true;
+
+ const q=questions[current];
+
+ if(index===q.a){
+
+  element.classList.add("correct");
+
+  score++;
+
+ }else{
+
+  element.classList.add("wrong");
+
+  document.querySelectorAll(".option")
+  [q.a].classList.add("correct");
+
+ }
+
+
+ document.getElementById("options")
+ .insertAdjacentHTML(
+  "beforeend",
+  `<div class="explanation">
+   💡 ${q.e}
+  </div>`
+ );
+}
+
+
+function nextQuestion(){
+
+ if(!answered){
+
+  toast("Answer එකක් select කරන්න.");
+
+  return;
+ }
+
+
+ if(current<questions.length-1){
+
+  current++;
+
+  loadQuestion();
+
+  return;
+ }
+
+
+ const gained=score*20;
+
+ user.xp+=gained;
+
+ user.tests++;
+
+ user.recent=user.recent||[];
+
+ user.recent.unshift({
+  title:quizSubject+" MCQ",
+  score:score+"/"+questions.length
+ });
+
+ user.recent=user.recent.slice(0,5);
+
+ localStorage.setItem(
+  "edunovaUser",
+  JSON.stringify(user)
+ );
+
+ updateUI();
+
+ renderRecent();
+
+ document.getElementById("questionNo")
+ .textContent="🎉 Quiz Complete";
+
+ document.getElementById("question")
+ .innerHTML=`
+  <div style="text-align:center;padding:20px">
+   <div style="font-size:60px">🏆</div>
+   <h2>${score}/${questions.length}</h2>
+   <p style="margin-top:10px">
+    +${gained} XP ⭐
+   </p>
+  </div>
+ `;
+
+ document.getElementById("options")
+ .innerHTML="";
+
+ document.getElementById("nextButton")
+ .textContent="🔄 Try Again";
+
+ document.getElementById("nextButton")
+ .onclick=()=>{
+  document.getElementById("nextButton")
+  .onclick=nextQuestion;
+  buildQuiz();
+ };
+}
+
+
+buildQuiz();
+
+
+/* =====================================================
+   NOTES
+===================================================== */
+
+function saveNote(){
+
+ const title=document
+ .getElementById("noteTitle")
+ .value.trim();
+
+ const text=document
+ .getElementById("noteText")
+ .value.trim();
+
+ if(!title||!text){
+
+  toast("Title සහ note එක දෙන්න.");
+
+  return;
+ }
+
+ user.notes=user.notes||[];
+
+ user.notes.unshift({
+  title:title,
+  text:text,
+  date:new Date().toLocaleDateString()
+ });
+
+ localStorage.setItem(
+  "edunovaUser",
+  JSON.stringify(user)
+ );
+
+ document.getElementById("noteTitle")
+ .value="";
+
+ document.getElementById("noteText")
+ .value="";
+
+ renderNotes();
+
+ toast("Note saved 💾");
+
+ addXP(5);
+}
+
+
+function renderNotes(){
+
+ const list=document
+ .getElementById("notesList");
+
+ if(!list||!user)return;
+
+ user.notes=user.notes||[];
+
+ if(!user.notes.length){
+
+  list.innerHTML=`
+   <div class="card">
+    <h3>📝 No notes yet</h3>
+    <p class="muted">
+     ඔයාගේ first note එක save කරන්න.
+    </p>
+   </div>
+  `;
+
+  return;
+ }
+
+ list.innerHTML=user.notes
+ .map((note,i)=>`
+
+  <div class="card">
+
+   <span class="tag">
+    ${note.date}
+   </span>
+
+   <h3>
+    ${escapeHTML(note.title)}
+   </h3>
+
+   <p class="muted"
+   style="margin-top:10px;white-space:pre-wrap">
+    ${escapeHTML(note.text)}
+   </p>
+
+   <button class="btn"
+   style="margin-top:12px"
+   onclick="deleteNote(${i})">
+    🗑️ Delete
+   </button>
+
+  </div>
+
+ `).join("");
+}
+
+
+function deleteNote(i){
+
+ user.notes.splice(i,1);
+
+ localStorage.setItem(
+  "edunovaUser",
+  JSON.stringify(user)
+ );
+
+ renderNotes();
+}
+
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+let seconds=1500;
+let timer=null;
+
+function updateTimer(){
+
+ const m=Math.floor(seconds/60)
+ .toString().padStart(2,"0");
+
+ const s=(seconds%60)
+ .toString().padStart(2,"0");
+
+ document.getElementById("timerText")
+ .textContent=m+":"+s;
+}
+
+
+function startTimer(){
+
+ if(timer)return;
+
+ timer=setInterval(()=>{
+
+  if(seconds<=0){
+
+   clearInterval(timer);
+   timer=null;
+
+   addXP(30);
+
+   toast("🎉 Focus session complete!");
+
+   resetTimer();
+
+   return;
+  }
+
+  seconds--;
+
+  updateTimer();
+
+ },1000);
+}
+
+
+function pauseTimer(){
+
+ clearInterval(timer);
+
+ timer=null;
+}
+
+
+function resetTimer(){
+
+ pauseTimer();
+
+ seconds=1500;
+
+ updateTimer();
+}
+
+
+updateTimer();
+
+
+/* =====================================================
+   AI
+===================================================== */
+
+function sendAI(){
+
+ const input=document
+ .getElementById("chatInput");
+
+ const text=input.value.trim();
+
+ if(!text)return;
+
+ const messages=document
+ .getElementById("messages");
+
+ messages.innerHTML+=`
+  <div class="message me">
+   ${escapeHTML(text)}
+  </div>
+ `;
+
+ input.value="";
+
+ setTimeout(()=>{
+
+  messages.innerHTML+=`
+   <div class="message bot">
+    ${aiReply(text)}
+   </div>
+  `;
+
+  messages.scrollTop=
+  messages.scrollHeight;
+
+ },500);
+}
+
+
+function aiReply(text){
+
+ const t=text.toLowerCase();
+
+ if(
+  t.includes("math")||
+  t.includes("ගණිත")
+ ){
+
+  return `
+   📐 <b>Mathematics</b><br><br>
+   Question එක <b>Given → Formula →
+   Calculation → Answer</b> කියන
+   steps වලට කඩලා බලන්න.<br><br>
+   Exact question එක එවන්න.
+  `;
+ }
+
+
+ if(
+  t.includes("bio")||
+  t.includes("ජීව")
+ ){
+
+  return `
+   🧬 <b>Biology</b><br><br>
+   Topic එක මුලින් simple concept එකකට
+   කඩලා, පස්සේ keywords මතක තියාගන්න.<br><br>
+   Topic එක කියන්න.
+  `;
+ }
+
+
+ if(
+  t.includes("physics")||
+  t.includes("භෞත")
+ ){
+
+  return `
+   ⚡ <b>Physics</b><br><br>
+   Numerical එකකදී
+   <b>Given → Formula → Substitute →
+   Unit</b> method එක use කරන්න.<br><br>
+   Question එක එවන්න.
+  `;
+ }
+
+
+ if(
+  t.includes("chem")||
+  t.includes("රසා")
+ ){
+
+  return `
+   ⚗️ <b>Chemistry</b><br><br>
+   Reactants, products සහ conditions
+   වෙන වෙනම identify කරන්න.<br><br>
+   Topic එක කියන්න.
+  `;
+ }
+
+
+ return `
+  🤖 හොඳ ප්‍රශ්නයක්! ❤️<br><br>
+  Maths, Biology, Physics හෝ Chemistry
+  වල topic/question එකක් එවන්න.
+  මම available study guidance එක දෙන්නම්.
+ `;
+}
+
+
+/* =====================================================
+   COUNTDOWN
+===================================================== */
+
+function countdown(id,year){
+
+ const target=new Date(
+  year,10,1,0,0,0
+ ).getTime();
+
+ setInterval(()=>{
+
+  const diff=target-Date.now();
+
+  if(diff<=0){
+
+   document.getElementById(id)
+   .textContent="🎯 Exam Time!";
+
+   return;
+  }
+
+  const days=Math.floor(
+   diff/(1000*60*60*24)
+  );
+
+  const hours=Math.floor(
+   diff/(1000*60*60)%24
+  );
+
+  const mins=Math.floor(
+   diff/(1000*60)%60
+  );
+
+  document.getElementById(id)
+  .textContent=
+  days+"d "+hours+"h "+mins+"m";
+
+ },1000);
+}
+
+countdown("c2027",2027);
+countdown("c2028",2028);
+countdown("c2029",2029);
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+function updateProfile(){
+
+ const name=document
+ .getElementById("newName")
+ .value.trim();
+
+ if(!name){
+
+  toast("New name එක දෙන්න.");
+
+  return;
+ }
+
+ user.name=name;
+
+ localStorage.setItem(
+  "edunovaUser",
+  JSON.stringify(user)
+ );
+
+ document.getElementById("newName")
+ .value="";
+
+ updateUI();
+
+ toast("Profile updated ✅");
+}
+
+
+/* =====================================================
+   RECENT
+===================================================== */
+
+function renderRecent(){
+
+ const box=document
+ .getElementById("recentList");
+
+ if(!box||!user)return;
+
+ user.recent=user.recent||[];
+
+ if(!user.recent.length){
+
+  box.innerHTML=`
+   <p class="muted">
+    තවම study activity නැහැ.
+   </p>
+  `;
+
+  return;
+ }
+
+ box.innerHTML=user.recent
+ .map(r=>`
+  <div class="recent">
+   <span>🧠 ${escapeHTML(r.title)}</span>
+   <b>${escapeHTML(r.score)}</b>
+  </div>
+ `).join("");
+}
+
+
+/* =====================================================
+   PAPERS
+===================================================== */
+
+function paperAction(name){
+
+ toast(name+" selected 📄");
+
+ setTimeout(()=>{
+
+  alert(
+   name+
+   "\n\nමේ demo version එකේ paper library UI ready. "+
+   "ඔයාගේ legally available PDF files/links "+
+   "පසුව මෙතන connect කරන්න පුළුවන්."
+  );
+
+ },200);
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function searchSite(){
+
+ const value=document
+ .getElementById("search")
+ .value.toLowerCase()
+ .trim();
+
+ document.querySelectorAll(".searchable")
+ .forEach(el=>{
+
+  const text=el.innerText.toLowerCase();
+
+  el.style.display=
+   !value||text.includes(value)
+   ?"block":"none";
+ });
+}
+
+
+/* =====================================================
+   MOTIVATION
+===================================================== */
+
+const motivationList=[
+
+ "🔥 අද කරන පොඩි effort එක හෙට ලොකු result එකක් වෙනවා.",
+
+ "🚀 Slow progress is still progress. නවතින්න එපා.",
+
+ "📚 එක chapter එකක් complete කිරීමත් victory එකක්.",
+
+ "🎯 Target එක මතක තියාගෙන අද වැඩ කරන්න.",
+
+ "💪 අමාරු topic එකක් කියන්නේ impossible topic එකක් නෙවෙයි.",
+
+ "⭐ Start කරන්න. Motivation එක වැඩ කරන අතරතුර එයි.",
+
+ "❤️ Future you will thank you for studying today."
+
+];
+
+document.getElementById("motivation")
+.textContent=
+motivationList[
+ new Date().getDate()%
+ motivationList.length
+];
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimeout;
+
+function toast(text){
+
+ const t=document
+ .getElementById("toast");
+
+ t.textContent=text;
+
+ t.classList.add("show");
+
+ clearTimeout(toastTimeout);
+
+ toastTimeout=setTimeout(()=>{
+  t.classList.remove("show");
+ },2200);
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(text){
+
+ return String(text).replace(
+  /[&<>"']/g,
+  m=>({
+   "&":"&amp;",
+   "<":"&lt;",
+   ">":"&gt;",
+   '"':"&quot;",
+   "'":"&#039;"
+  }[m])
+ );
+}
+
+</script>
+
+</body>
+</html>
